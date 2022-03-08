@@ -1,0 +1,7 @@
+{
+  "name": "anonsnap",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
