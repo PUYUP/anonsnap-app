@@ -1,0 +1,41 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title size="small">
+      Sekitar
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="presentFilterRadius()">
+        <ion-icon slot="start" name="radio-outline"></ion-icon>
+        <ng-container *ngIf="filterRadius$ | async as radius">
+          {{ radius?.distance }} km
+        </ng-container>
+      </ion-button>
+
+      <ion-button>
+        <ion-icon name="locate-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  {{ latitude }} | {{ longitude }}
+  <ion-item lines="full" button>
+    <div class="d-flex w-100 ion-padding-top ion-padding-bottom">
+      <div class="rounded-pill bg-light px-3 py-2 small me-auto w-100 d-flex align-items-center" (click)="presentMomentEditor()">
+        Simpan kenangan tempat ini
+      </div>
+
+      <div class="ps-2">
+        <ion-buttons>
+          <ion-button (click)="presentMomentPhotoEditor()">
+            <ion-icon name="camera-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </div>
+    </div>
+  </ion-item>
+
+  <app-moment-list></app-moment-list>
+</ion-content>
