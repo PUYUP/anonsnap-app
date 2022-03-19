@@ -10,6 +10,14 @@ import { MomentListComponent } from './components/moment-list/moment-list.compon
 import { MomentEditorComponent } from './components/moment-editor/moment-editor.component';
 import { MomentEditorPhotoComponent } from './components/moment-editor-photo/moment-editor-photo.component';
 
+import { FileTransfer, FileTransferObject } from '@awesome-cordova-plugins/file-transfer/ngx';
+import { File } from '@awesome-cordova-plugins/file/ngx';
+
+import { AutosizeModule } from 'ngx-autosize';
+import { PictureViewerComponent } from './components/picture-viewer/picture-viewer.component';
+import { SwiperModule } from 'swiper/angular';
+import { MapRadiusComponent } from './components/map-radius/map-radius.component';
+
 @NgModule({
   imports: [
     IonicModule,
@@ -17,18 +25,29 @@ import { MomentEditorPhotoComponent } from './components/moment-editor-photo/mom
     FormsModule,
     ReactiveFormsModule,
     ExplorePageRoutingModule,
-    SharedModule
+    SharedModule,
+    AutosizeModule,
+    SwiperModule,
   ],
   declarations: [
     ExplorePage,
     MomentListComponent,
     MomentEditorComponent,
-    MomentEditorPhotoComponent
+    MomentEditorPhotoComponent,
+    PictureViewerComponent,
+    MapRadiusComponent,
   ],
   entryComponents: [
     MomentListComponent,
     MomentEditorComponent,
-    MomentEditorPhotoComponent
+    MomentEditorPhotoComponent,
+    PictureViewerComponent,
+    MapRadiusComponent,
+  ],
+  providers: [
+    FileTransfer,
+    FileTransferObject,
+    File,
   ]
 })
 export class ExplorePageModule {}

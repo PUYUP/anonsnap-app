@@ -1,0 +1,29 @@
+<ng-container *ngIf="userSession$ | async as session">
+  <div class="p-3">
+    <ion-item lines="full" class="mb-2">
+      <ion-label position="stacked">Nama Pengguna</ion-label>
+      <ion-input placeholder="joker125" [(ngModel)]="username"></ion-input>
+
+      <div slot="end" class="h-100 d-flex align-items-center m-0 pt-3">
+        <ion-button [disabled]="session?.data?.user?.username == username" slot="end" size="small" fill="clear" (click)="updateUser()">
+          Simpan
+        </ion-button>
+      </div>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input type="email" placeholder="joker125@anonsnap.com" [(ngModel)]="email"></ion-input>
+      
+      <div slot="end" class="h-100 d-flex align-items-center m-0 pt-3">
+        <ion-button [disabled]="session?.data?.user?.email == email" slot="end" size="small" fill="clear" (click)="updateSecurity()">
+          Simpan
+        </ion-button>
+      </div>
+    </ion-item>
+  </div>
+
+  <div class="text-center mt-3">
+    <ion-button fill="clear" (click)="presentChangePassword()">Rubah Password</ion-button>
+  </div>
+</ng-container>

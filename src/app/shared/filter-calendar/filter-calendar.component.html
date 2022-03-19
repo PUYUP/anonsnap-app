@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar color="tosca">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="small">
+      Pilih Tanggal
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="ion-padding bg-white">
+    <ion-datetime locale="id-ID" presentation="date" (ionChange)="calendarChange($event)"></ion-datetime>
+  </div>
+</ion-content>

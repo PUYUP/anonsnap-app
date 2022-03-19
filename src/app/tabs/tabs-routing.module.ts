@@ -12,8 +12,8 @@ const routes: Routes = [
         loadChildren: () => import('../explore/explore.module').then(m => m.ExplorePageModule)
       },
       {
-        path: 'tag',
-        loadChildren: () => import('../tag/tag.module').then(m => m.TagPageModule)
+        path: 'search',
+        loadChildren: () => import('../search/search.module').then(m => m.SearchPageModule)
       },
       {
         path: 'account',

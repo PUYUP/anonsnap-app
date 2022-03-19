@@ -1,0 +1,15 @@
+<ion-content [fullscreen]="true" color="dark">
+  <ion-buttons class="position-absolute top-0 end-0 p-2">
+    <ion-button color="secondary" (click)="dismissModal()">
+      <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+
+  <swiper class="h-100" [pagination]="true" [zoom]="true">
+    <ng-container *ngFor="let item of items">
+      <ng-template swiperSlide>
+        <ion-img [src]="item.file"></ion-img>
+      </ng-template>
+    </ng-container>
+  </swiper>
+</ion-content>

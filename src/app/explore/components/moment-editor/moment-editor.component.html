@@ -1,24 +1,57 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar color="tosca">
     <ion-buttons slot="start">
       <ion-button (click)="dismissModal()">
         <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
 
-    <ion-title size="small">Buat Kenangan</ion-title>
+    <ion-title size="small">Simpan Kenangan</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <form>
-    <ion-item color="light">
-      <ion-textarea placeholder="Kenangan apa?" rows="3"></ion-textarea>
-    </ion-item>
+<ion-content [fullscreen]="true" class="ion-padding-bottom">
+  <ng-container *ngIf="createdMoment$ | async as moment">
+    <form [formGroup]="formGroup" (ngSubmit)="onFormSubmit()">
+      <ion-item color="light">
+        <ion-textarea placeholder="Kenangan apa?" rows="4" formControlName="summary" autosize></ion-textarea>
+      </ion-item>
 
-    <ion-item lines="none" button (click)="presentMomentPhotoEditor()">
-      <ion-icon slot="start" name="camera-outline"></ion-icon>
-      <ion-label>Tambahkan Foto</ion-label>
-    </ion-item>
-  </form>
+      <ion-item lines="none" button (click)="takePicture()">
+        <ion-icon slot="start" name="camera-outline"></ion-icon>
+        <ion-label>Tambahkan Foto</ion-label>
+      </ion-item>
+
+      <ng-container *ngIf="attachmentsPreview?.length > 0">
+        <div class="ion-padding-start ion-padding-end">
+          <ion-progress-bar
+            *ngIf="progress > 0 && progress < 99"
+            [value]="progress / 100"
+            class="mb-2"
+          ></ion-progress-bar>
+            
+          <div class="row gx-2 gy-2">
+            <div *ngFor="let item of attachmentsPreview" class="col-4">
+              <div class="ratio ratio-1x1 rounded shadow-sm">
+                <div>
+                  <ion-img [src]="item.file" class="fit-image rounded"></ion-img>
+                  <button *ngIf="item?.guid" type="button" class="btn btn-danger btn-sm position-absolute rounded-0 bottom-0 end-0" (click)="removeAttachment(item)">
+                    <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="text-center pt-4" [ngStyle]="{'min-height': '66px'}">
+        <button *ngIf="moment?.status != 'loading' && (updatedMoment$ | async)?.status != 'loading'" type="submit" class="btn btn-info rounded-pill px-4 py-2 text-white" [disabled]="formGroup.invalid || moment?.status == 'loading'">
+          <ion-text>Submit</ion-text>
+        </button>
+
+        <ion-spinner *ngIf="moment?.status == 'loading' ||  (updatedMoment$ | async)?.status == 'loading'" name="dots" color="tosca"></ion-spinner>
+      </div>
+    </form>
+  </ng-container>
 </ion-content>

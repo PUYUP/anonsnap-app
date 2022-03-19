@@ -8,7 +8,7 @@
 
   <ion-item lines="none">
     <ng-container *ngIf="filterRadius$ | async as radius">
-      <ion-range min="1" max="5" step="1" pin="true" snaps="true" [value]="radius?.distance" (ionChange)="onRadiusChange()" [(ngModel)]="radiusValue">
+      <ion-range debounce="200" [min]="step" max="5" [step]="step" pin="true" snaps="true" [value]="radius?.radius" (ionChange)="onRadiusChange()" [(ngModel)]="radiusValue">
         <ion-buttons slot="start" size="small">
           <ion-button (click)="onDecreaseRadius()" [disabled]="radiusValue == minRadius">
             <ion-icon slot="icon-only" name="remove-outline"></ion-icon>

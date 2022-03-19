@@ -1,0 +1,34 @@
+<ng-container *ngIf="userSignin$ | async as signin">
+  <div class="p-3">
+    <form [formGroup]="formGroup" (ngSubmit)="onFormSubmit()">
+      <ion-item lines="full" class="mb-2">
+        <ion-icon slot="start" name="person-outline"></ion-icon>
+        <ion-label position="stacked">Nama Pengguna</ion-label>
+        <ion-input placeholder="joker125" formControlName="username"></ion-input>
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-icon slot="start" name="key-outline"></ion-icon>
+        <ion-label position="stacked">Password</ion-label>
+        <ion-input [type]="isPasswordShowed ? 'text' : 'password'" placeholder="******" formControlName="password"></ion-input>
+        <ion-buttons slot="end">
+          <ion-button (click)="showPassword()">
+            <ion-icon slot="icon-only" [name]="isPasswordShowed ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+
+      <div class="ion-text-end pt-2">
+        <ion-button mode="ios" fill="clear" size="small" (click)="lostPassword()">Lupa Password</ion-button>
+      </div>
+
+      <div class="text-center pt-4" [ngStyle]="{'min-height': '66px'}">
+        <button *ngIf="signin?.status != 'loading'" type="submit" class="btn btn-info rounded-pill px-4 py-2 text-white" [disabled]="formGroup.invalid || signin?.status == 'loading'">
+          <ion-text>Submit</ion-text>
+        </button>
+
+        <ion-spinner *ngIf="signin?.status == 'loading'" name="dots" color="tosca"></ion-spinner>
+      </div>
+    </form>
+  </div>
+</ng-container>

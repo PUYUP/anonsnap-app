@@ -1,33 +1,33 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { ChangeFilterRadius, ChangeFilterRadiusSuccess } from '../../actions/filter-radius/filter-radius.actions';
+import { FilterRadius, FilterRadiusSuccess } from '../../actions/filter/filter.actions';
 
 
 export const filterRadiusFeatureKey = 'filterRadius';
 
 export interface FilterRadiusState {
-  distance: number;
+  radius: number;
 }
 
 export const initialState: FilterRadiusState = {
-  distance: 1,
+  radius: 0.25,
 };
 
 export const reducer = createReducer(
   initialState,
 
-  on(ChangeFilterRadius, (state) => {
+  on(FilterRadius, (state) => {
     return {
       ...state,
       data: {
-        distance: state.distance,
+        radius: state.radius,
       }
     }
   }),
-  on(ChangeFilterRadiusSuccess, (state, payload) => {
+  on(FilterRadiusSuccess, (state, payload) => {
     return {
       ...state,
       data: {
-        distance: state.distance,
+        radius: state.radius,
         ...payload.data
       }
     }

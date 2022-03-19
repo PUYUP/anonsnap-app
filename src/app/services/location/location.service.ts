@@ -3,12 +3,16 @@ import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { Capacitor } from '@capacitor/core';
 import { ToastController } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+import * as apiurl from '../endpoint';
 
 @Injectable({
     providedIn: 'root'
 })
 export class LocationService {
-  constructor(public toastController: ToastController) { }
+  constructor(public toastController: ToastController, private _httpClient: HttpClient) { }
 
   async presentToast(message: string) {
     const toast = await this.toastController.create({
@@ -81,5 +85,10 @@ export class LocationService {
         }
       });
     })
+  }
+
+  // Save user location each share moment
+  saveLocation(param: any = {}): Observable<any> {
+    return this._httpClient.post(apiurl.location, param);
   }
 }

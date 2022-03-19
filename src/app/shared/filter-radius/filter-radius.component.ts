@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ChangeFilterRadiusSuccess } from 'src/app/store/actions/filter-radius/filter-radius.actions';
+import { FilterRadiusSuccess } from 'src/app/store/actions/filter/filter.actions';
 import { AppState } from 'src/app/store/app.state';
-import { SelectFilterRadius } from 'src/app/store/selectors/filter-radius/filter-radius.selectors';
+import { SelectFilterRadius } from 'src/app/store/selectors/filter/filter.selectors';
 
 @Component({
   selector: 'app-filter-radius',
@@ -13,31 +13,24 @@ import { SelectFilterRadius } from 'src/app/store/selectors/filter-radius/filter
 })
 export class FilterRadiusComponent implements OnInit {
 
+  @Input() coordinate: any;
+
   maxRadius: number = 5;
   minRadius: number = 1;
-  radiusValue: number = 1;
+  radiusValue: number = 0.25;
+  step: number = 0.25;
   filterRadius$: Observable<any>;
   onDestroy$ = new Subject<void>();
 
   constructor(private _store: Store<AppState>) { 
     this.filterRadius$ = this._store.pipe(select(SelectFilterRadius));
     this.filterRadius$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
-      this.radiusValue = state?.distance;
+      console.log(state);
+      this.radiusValue = state?.radius;
     })
   }
 
-  ngOnInit() { }
-  
-  onRadiusChange() {
-    this._store.dispatch(ChangeFilterRadiusSuccess({data: {distance: this.radiusValue}}))
-  }
-
-  onDecreaseRadius() {
-    this.radiusValue = this.radiusValue - 1;
-  }
-
-  onIncreaseRadius() {
-    this.radiusValue = this.radiusValue + 1;
+  ngOnInit() { 
   }
 
   ngOnDestroy(): void {

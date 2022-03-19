@@ -1,0 +1,16 @@
+<ion-content>
+  <p *ngIf="commentItem?.guid" class="ion-margin small text-muted">Edit Komentar</p>
+
+  <ng-container *ngIf="createdComment$ | async as comment">
+    <form [formGroup]="formGroup" (ngSubmit)="onFormSubmit()">
+      <ion-item lines="full" color="light">
+        <ion-textarea placeholder="Tulis komentar..." rows="3" formControlName="comment_content" autosize></ion-textarea>
+      </ion-item>
+
+      <ion-button type="submit" expand="block" fill="clear" class="ion-margin" [disabled]="formGroup.invalid || comment?.status == 'loading' || (updatedComment$ | async).status == 'loading'">
+        <ion-text slot="start">Kirim</ion-text>
+        <ion-icon name="send-outline" slot="end"></ion-icon>
+      </ion-button>
+    </form>
+  </ng-container>
+</ion-content>

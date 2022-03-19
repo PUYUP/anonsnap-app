@@ -1,15 +1,32 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="primary">
+  <ion-toolbar color="tosca">
     <ion-title size="small">
-      Akun
+      {{ (userSession$ | async)?.data?.user ? 'Akun' : 'Masuk ke Akun' }}
     </ion-title>
+
+    <ion-buttons *ngIf="(userSession$ | async)?.data?.user" slot="end" class="ion-padding-end">
+      <ion-button mode="ios" (click)="signout()">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+        <ion-text>Keluar</ion-text>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar color="primary">
-      <ion-title size="small">Akun</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ng-container *ngIf="userSession$ | async as session">
+    <ng-container *ngIf="!session?.data?.user">
+      <app-form-signin></app-form-signin>
+      <div class="text-center pt-3">
+        <p class="mb-2 small text-secondary">Daftar jika belum bergabung</p>
+        <button type="button" class="btn btn-warning rounded-pill px-3 py-1 text-white" (click)="presentSignupModal()">
+          Daftar
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="session?.data?.user">
+      <app-profile></app-profile>
+    </ng-container>
+  </ng-container>
 </ion-content>
