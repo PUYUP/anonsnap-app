@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="tosca">
+  <ion-toolbar color="black">
     <ion-title size="small">
       Sekitar
     </ion-title>
@@ -38,10 +38,10 @@
 
   <div class="row gap-0 bg-white align-items-center">
     <div class="col-4 pe-0">
-      <ion-item lines="none" button (click)="presentFilterRadius()" class="h-100">
-        <ion-icon slot="start" name="radio-outline" class="me-2" size="small"></ion-icon>
+      <ion-item lines="none" button (click)="presentFilterMap()" class="h-100">
+        <ion-icon slot="start" name="map-outline" class="me-2" size="small"></ion-icon>
         <ion-label>
-          <ion-text class="small">Radius</ion-text>
+          <ion-text class="small">Peta</ion-text>
         </ion-label>
       </ion-item>
     </div>
@@ -63,7 +63,7 @@
     </div>
 
     <div class="col-4 p-0 border-start">
-      <ion-item lines="none" button (click)="presentCalendar()" class="h-100">
+      <ion-item lines="none" button (click)="presentListTag()" class="h-100">
         <ion-icon slot="start" name="pricetags-outline" class="me-2" size="small"></ion-icon>
         <ion-label>
           <ion-text class="small">Tag</ion-text>
@@ -72,23 +72,28 @@
     </div>
   </div>
 
-  <div *ngIf="filterCalendar || (filterRadius$ | async)?.radius" class="bg-white border-top ion-padding-start ion-padding-end py-2 small d-flex align-items-center">
+  <div *ngIf="filterCalendar || (filterMap$ | async)?.latitude || (filterTag$ | async)?.name" class="bg-white border-top ion-padding-start ion-padding-end py-0 small d-flex align-items-center">
     <div>
-      <span *ngIf="(filterRadius$ | async)?.radius" class="me-3">
-        {{ (filterRadius$ | async)?.radius | number: '1.0-0' }} KM
-      </span>
+      <ng-container *ngIf="filterMap$ | async as map">
+        <ion-chip *ngIf="map?.latitude" class="me-2 ms-0">
+          <ion-label>{{ map?.latitude | number: '1.0-2' }}, {{ map?.longitude | number: '1.0-2' }}</ion-label>
+        </ion-chip>        
+      </ng-container>
 
-      <span *ngIf="filterCalendar" class="me-3">
-        <span [innerHTML]="filterCalendar"></span>
-      </span>
-    </div>
+      <ion-chip *ngIf="filterCalendar" class="me-2 ms-0">
+        <ion-label [innerHTML]="filterCalendar"></ion-label>
+      </ion-chip> 
 
-    <div class="ms-auto">
-      <ion-button size="small" color="danger" mode="ios" fill="clear">
-        <ion-icon slot="icon-only" name="close-outline" size="small"></ion-icon>
-      </ion-button>
+      <ion-chip *ngIf="(filterTag$ | async)?.name" class="me-2 ms-0">
+        <ion-label [innerHTML]="(filterTag$ | async)?.name"></ion-label>
+      </ion-chip>
+
+      <ion-chip class="me-2 ms-0" (click)="clearFilter()">
+        <ion-label>Clear</ion-label>
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-chip>
     </div>
   </div>
   
-  <app-moment-list></app-moment-list>
+  <app-list-moment></app-list-moment>
 </ion-content>

@@ -2,27 +2,19 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FilterLocationComponent } from './filter-location/filter-location.component';
 import { IonicModule } from '@ionic/angular';
-import { FilterRadiusComponent } from './filter-radius/filter-radius.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormSigninComponent } from './form-signin/form-signin.component';
 import { FormSignupComponent } from './form-signup/form-signup.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ValidateVerificationComponent } from './validate-verification/validate-verification.component';
 import { FilterCalendarComponent } from './filter-calendar/filter-calendar.component';
 
-import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
-import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
-import interactionPlugin from '@fullcalendar/interaction'; // a plugin!
-import bootstrap5Plugin from '@fullcalendar/bootstrap5';
-import { CommentListComponent } from './comment-list/comment-list.component';
+import { ListCommentComponent } from './list-comment/list-comment.component';
 import { CommentEditorComponent } from './comment-editor/comment-editor.component';
 import { AutosizeModule } from 'ngx-autosize';
+import { ListTagComponent } from './list-tag/list-tag.component';
 
-FullCalendarModule.registerPlugins([ // register FullCalendar plugins
-  dayGridPlugin,
-  interactionPlugin,
-  bootstrap5Plugin
-]);
 
 @NgModule({
   imports: [
@@ -30,41 +22,41 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     IonicModule,
     FormsModule,
     ReactiveFormsModule,
-    FullCalendarModule,
     AutosizeModule,
+    ScrollingModule,
   ],
   declarations: [
     FilterLocationComponent,
-    FilterRadiusComponent,
     FormSigninComponent,
     FormSignupComponent,
     ResetPasswordComponent,
     ValidateVerificationComponent,
     FilterCalendarComponent,
-    CommentListComponent,
+    ListCommentComponent,
     CommentEditorComponent,
+    ListTagComponent,
   ],
   entryComponents: [
     FilterLocationComponent,
-    FilterRadiusComponent,
     FormSigninComponent,
     FormSignupComponent,
     ResetPasswordComponent,
     ValidateVerificationComponent,
     FilterCalendarComponent,
-    CommentListComponent,
+    ListCommentComponent,
     CommentEditorComponent,
+    ListTagComponent,
   ],
   exports: [
     FilterLocationComponent,
-    FilterRadiusComponent,
     FormSigninComponent,
     FormSignupComponent,
     ResetPasswordComponent,
     ValidateVerificationComponent,
     FilterCalendarComponent,
-    CommentListComponent,
+    ListCommentComponent,
     CommentEditorComponent,
+    ListTagComponent,
   ]
 })
 export class SharedModule { }

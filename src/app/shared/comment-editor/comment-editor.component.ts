@@ -1,12 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AppState } from '@capacitor/app';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { AppState } from 'src/app/store/app.state';
 import { ModalController, ToastController } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { createComment, updateComment } from 'src/app/store/actions/comment/comment.actions';
-import { SelectCreatedComment, SelectUpdatedComment } from 'src/app/store/selectors/comment/comment.selectors';
+import { createComment, createMyComment, updateComment, updateMyComment } from 'src/app/store/actions/comment/comment.actions';
+import { SelectCreatedComment, SelectCreatedMyComment, SelectUpdatedComment, SelectUpdatedMyComment } from 'src/app/store/selectors/comment/comment.selectors';
 
 @Component({
   selector: 'app-comment-editor',
@@ -15,12 +15,17 @@ import { SelectCreatedComment, SelectUpdatedComment } from 'src/app/store/select
 })
 export class CommentEditorComponent implements OnInit {
 
+  @ViewChild('myForm') ngForm: NgForm;
+  
   @Input('momentItem') momentItem: any;
   @Input('commentItem') commentItem: any;
+  @Input('source') source: any;
 
   formGroup: any = FormGroup;
   createdComment$: Observable<any>;
+  createdMyComment$: Observable<any>;
   updatedComment$: Observable<any>;
+  updatedMyComment$: Observable<any>;
   onDestroy$ = new Subject<void>();
 
   constructor(
@@ -35,8 +40,22 @@ export class CommentEditorComponent implements OnInit {
       }
     });
 
+    this.createdMyComment$ = this._store.pipe(select(SelectCreatedMyComment));
+    this.createdMyComment$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
+      if (state?.status == 'loaded') {
+        this.dismiss()
+      }
+    });
+
     this.updatedComment$ = this._store.pipe(select(SelectUpdatedComment));
     this.updatedComment$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
+      if (state?.status == 'loaded') {
+        this.dismiss()
+      }
+    });
+
+    this.updatedMyComment$ = this._store.pipe(select(SelectUpdatedMyComment));
+    this.updatedMyComment$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
       if (state?.status == 'loaded') {
         this.dismiss()
       }
@@ -58,21 +77,46 @@ export class CommentEditorComponent implements OnInit {
   onFormSubmit() {
     if (this.commentItem && this.commentItem?.guid) {
       // update
-      this._store.dispatch(updateComment({
-        data: { ...this.formGroup.value },
-        guid: this.commentItem.guid
-      }));
+      if (this.source == 'account') {
+        this._store.dispatch(updateMyComment({
+          data: { ...this.formGroup.value },
+          guid: this.commentItem.guid
+        }));
+
+      } else {
+
+        this._store.dispatch(updateComment({
+          data: { ...this.formGroup.value },
+          guid: this.commentItem.guid
+        }));
+      }
 
     } else {
       // create
-      this._store.dispatch(createComment({
-        data: {
-          ...this.formGroup.value,
-          content_type: 'moment',
-          object_id: this.momentItem?.guid
-        }
-      }))
+      if (this.source == 'account') {
+        this._store.dispatch(createMyComment({
+          data: {
+            ...this.formGroup.value,
+            content_type: 'moment',
+            object_id: this.momentItem?.guid
+          }
+        }))
+
+      } else {
+
+        this._store.dispatch(createComment({
+          data: {
+            ...this.formGroup.value,
+            content_type: 'moment',
+            object_id: this.momentItem?.guid
+          }
+        }))
+      }
     }
+  }
+
+  send() {
+    this.ngForm.ngSubmit.emit();
   }
 
   dismiss() {

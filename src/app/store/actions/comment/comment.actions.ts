@@ -60,7 +60,7 @@ export const loadComments = createAction(
 
 export const loadMoreComments = createAction(
   '[Comment] Load More Comments',
-  props<{ data?: any; filter?: any; isLoadMore: boolean; }>()
+  props<{ data?: any; filter?: any; isLoadMore?: boolean; }>()
 );
 
 export const loadCommentsSuccess = createAction(
@@ -70,5 +70,79 @@ export const loadCommentsSuccess = createAction(
 
 export const loadCommentsFailure = createAction(
   '[Comment] Load Comments Failure',
+  props<{ error: any }>()
+);
+
+
+// CREATE MY COMMENT
+export const createMyComment = createAction(
+  '[Comment] Create My Comment',
+  props<{ data: any }>()
+);
+
+export const createMyCommentSuccess = createAction(
+  '[Comment] Create My Comment Success',
+  props<{ data: any }>()
+);
+
+export const createMyCommentFailure = createAction(
+  '[Comment] Create My Comment Failure',
+  props<{ error: any }>()
+);
+
+// UPDATE MY COMMENT
+export const updateMyComment = createAction(
+  '[Comment] Update My Comment',
+  props<{ data: any, guid: string; }>()
+);
+
+export const updateMyCommentSuccess = createAction(
+  '[Comment] Update My Comment Success',
+  props<{ data: any }>()
+);
+
+export const updateMyCommentFailure = createAction(
+  '[Comment] Update My Comment Failure',
+  props<{ error: any }>()
+);
+
+// DELETE MY COMMENT
+export const deleteMyComment = createAction(
+  '[Comment] Delete My Comment',
+  props<{ guid: string; }>()
+);
+
+export const deleteMyCommentSuccess = createAction(
+  '[Comment] Delete My Comment Success',
+  props<{ data: any }>()
+);
+
+export const deleteMyCommentFailure = createAction(
+  '[Comment] Delete My Comment Failure',
+  props<{ error: any }>()
+);
+
+// LOAD MY COMMENT
+export const resetMyCommentStatus = createAction(
+  '[Comment] Reset My Comment Status'
+);
+
+export const loadMyComments = createAction(
+  '[Comment] Load My Comments',
+  props<{ data?: any; filter?: any }>()
+);
+
+export const loadMoreMyComments = createAction(
+  '[Comment] Load More My Comments',
+  props<{ data?: any; filter?: any; isLoadMore?: boolean; }>()
+);
+
+export const loadMyCommentsSuccess = createAction(
+  '[Comment] Load My Comments Success',
+  props<{ data: any; filter?: any }>()
+);
+
+export const loadMyCommentsFailure = createAction(
+  '[Comment] Load My Comments Failure',
   props<{ error: any }>()
 );

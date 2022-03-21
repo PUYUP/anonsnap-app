@@ -22,7 +22,7 @@ export const requestGeolocation = createAction(
   props<{ action?: string }>()
 );
 
-export const clearGeolocation = createAction(
+export const resetGeolocationStatus = createAction(
   '[Location] Clear Geolocation'
 );
 

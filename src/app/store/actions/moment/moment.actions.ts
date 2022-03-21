@@ -20,20 +20,20 @@ export const createMomentFailure = createAction(
 
 
 // ...
-// EDIT
+// UPDATE
 // ...
 export const updateMoment = createAction(
-  '[Moment] Edit Moment',
+  '[Moment] Update Moment',
   props<{ data: any, guid: string; }>()
 );
 
 export const updateMomentSuccess = createAction(
-  '[Moment] Edit Moment Success',
+  '[Moment] Update Moment Success',
   props<{ data: any }>()
 );
 
 export const updateMomentFailure = createAction(
-  '[Moment] Edit Moment Failure',
+  '[Moment] Update Moment Failure',
   props<{ error: any }>()
 );
 
@@ -60,11 +60,6 @@ export const deleteMomentFailure = createAction(
 // ...
 // LOADS
 // ...
-export const addMoment = createAction(
-  '[Moment] Add Moment',
-  props<{ data?: any }>()
-);
-
 export const loadMoments = createAction(
   '[Moment] Load Moments',
   props<{ data?: any; filter?: any }>()
@@ -72,7 +67,7 @@ export const loadMoments = createAction(
 
 export const loadMoreMoments = createAction(
   '[Moment] Load More Moments',
-  props<{ data?: any; filter?: any; isLoadMore: boolean; }>()
+  props<{ data?: any; filter?: any; isLoadMore?: boolean; }>()
 );
 
 export const loadMomentsSuccess = createAction(
@@ -85,11 +80,84 @@ export const loadMomentsFailure = createAction(
   props<{ error: any }>()
 );
 
+
+// ...
+// LOADS MY MOMENT
+// ...
+export const loadMyMoments = createAction(
+  '[Moment] Load My Moments',
+  props<{ data?: any; filter?: any }>()
+);
+
+export const loadMoreMyMoments = createAction(
+  '[Moment] Load More My Moments',
+  props<{ data?: any; filter?: any; isLoadMore?: boolean; }>()
+);
+
+export const loadMyMomentsSuccess = createAction(
+  '[Moment] Load My Moments Success',
+  props<{ data: any; filter?: any }>()
+);
+
+export const loadMyMomentsFailure = createAction(
+  '[Moment] Load My Moments Failure',
+  props<{ error: any }>()
+);
+
+
+// ...
+// UPDATE MY MOMENT
+// ...
+export const updateMyMoment = createAction(
+  '[Moment] Update My Moment',
+  props<{ data: any, guid: string; }>()
+);
+
+export const updateMyMomentSuccess = createAction(
+  '[Moment] Update My Moment Success',
+  props<{ data: any }>()
+);
+
+export const updateMyMomentFailure = createAction(
+  '[Moment] Update My Moment Failure',
+  props<{ error: any }>()
+);
+
+
+// ...
+// DELETE MY MOMENT
+// ...
+export const deleteMyMoment = createAction(
+  '[Moment] Delete My Moment',
+  props<{ guid: string; }>()
+);
+
+export const deleteMyMomentSuccess = createAction(
+  '[Moment] Delete My Moment Success',
+  props<{ data: any }>()
+);
+
+export const deleteMyMomentFailure = createAction(
+  '[Moment] Delete My Moment Failure',
+  props<{ error: any }>()
+);
+
+
+// REFRESH
 export const refreshMoments = createAction(
   '[Moment] Refresh Moments',
   props<{ data?: any; filter?: any }>()
 );
 
+export const refreshMomentsSuccess = createAction(
+  '[Moment] Refresh Moments Success',
+  props<{ data: any; filter?: any }>()
+);
+
 export const resetMomentStatus = createAction(
   '[Moment] Reset Moment Status'
+);
+
+export const resetMyMomentStatus = createAction(
+  '[Moment] Reset My Moment Status'
 );

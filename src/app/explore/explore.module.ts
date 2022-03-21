@@ -6,7 +6,7 @@ import { ExplorePage } from './explore.page';
 
 import { ExplorePageRoutingModule } from './explore-routing.module';
 import { SharedModule } from '../shared/shared.module';
-import { MomentListComponent } from './components/moment-list/moment-list.component';
+import { ListMomentComponent } from './components/list-moment/list-moment.component';
 import { MomentEditorComponent } from './components/moment-editor/moment-editor.component';
 import { MomentEditorPhotoComponent } from './components/moment-editor-photo/moment-editor-photo.component';
 
@@ -16,7 +16,8 @@ import { File } from '@awesome-cordova-plugins/file/ngx';
 import { AutosizeModule } from 'ngx-autosize';
 import { PictureViewerComponent } from './components/picture-viewer/picture-viewer.component';
 import { SwiperModule } from 'swiper/angular';
-import { MapRadiusComponent } from './components/map-radius/map-radius.component';
+import { FilterMapComponent } from './components/filter-map/filter-map.component';
+import { CameraPreviewComponent } from './components/camera-preview/camera-preview.component';
 
 @NgModule({
   imports: [
@@ -31,18 +32,20 @@ import { MapRadiusComponent } from './components/map-radius/map-radius.component
   ],
   declarations: [
     ExplorePage,
-    MomentListComponent,
+    ListMomentComponent,
     MomentEditorComponent,
     MomentEditorPhotoComponent,
     PictureViewerComponent,
-    MapRadiusComponent,
+    FilterMapComponent,
+    CameraPreviewComponent,
   ],
   entryComponents: [
-    MomentListComponent,
+    ListMomentComponent,
     MomentEditorComponent,
     MomentEditorPhotoComponent,
     PictureViewerComponent,
-    MapRadiusComponent,
+    FilterMapComponent,
+    CameraPreviewComponent,
   ],
   providers: [
     FileTransfer,

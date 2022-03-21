@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { clearGeolocation, requestGeolocation, requestGeolocationFailure, requestGeolocationSuccess } from '../../actions/location/location.actions';
+import { resetGeolocationStatus, requestGeolocation, requestGeolocationFailure, requestGeolocationSuccess } from '../../actions/location/location.actions';
 
 
 export const locationGeolocationFeatureKey = 'locationGeolocation';
@@ -45,7 +45,7 @@ export const reducer = createReducer(
       status: 'init'
     }
   }),
-  on(clearGeolocation, (state, payload) => {
+  on(resetGeolocationStatus, (state, payload) => {
     return {
       ...state,
       status: 'init'

@@ -1,12 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AppState } from '@capacitor/app';
 import { ModalController } from '@ionic/angular';
 import { ActionsSubject, select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
-import { createMoment, updateMoment } from 'src/app/store/actions/moment/moment.actions';
-import { SelectCreatedMoment, SelectUpdatedMoment } from 'src/app/store/selectors/moment/moment.selectors';
+import { createMoment, updateMoment, updateMyMoment } from 'src/app/store/actions/moment/moment.actions';
+import { SelectCreatedMoment, SelectUpdatedMoment, SelectUpdatedMyMoment } from 'src/app/store/selectors/moment/moment.selectors';
 
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@awesome-cordova-plugins/file-transfer/ngx';
 import { File } from '@awesome-cordova-plugins/file/ngx';
@@ -15,6 +14,11 @@ import { UserService } from 'src/app/services/user/user.service';
 import { Camera, CameraResultType } from '@capacitor/camera';
 
 import * as endpoint from '../../../services/endpoint';
+import { CameraPreviewComponent } from '../camera-preview/camera-preview.component';
+import { AppState } from 'src/app/store/app.state';
+import { SelectTakePicture } from 'src/app/store/selectors/camera-preview/camera-preview.selectors';
+import { resetTakePicture } from 'src/app/store/actions/camera-preview/camera-preview.actions';
+
 
 @Component({
   providers: [File],
@@ -27,14 +31,17 @@ export class MomentEditorComponent implements OnInit {
   @Input() locationObj: any;
   @Input() picture: any;
   @Input() item: any;
+  @Input() source: string;
 
   formGroup: any = FormGroup;
   createdMoment$: Observable<any>;
   updatedMoment$: Observable<any>;
+  updatedMyMoment$: Observable<any>;
   onDestroy$ = new Subject<void>();
   attachmentsPreview: any = [];
   attachmentsGuid: any = [];
   progress: number = 0;
+  takedPicture$: Observable<any>;
 
   constructor(
     public modalController: ModalController,
@@ -54,6 +61,33 @@ export class MomentEditorComponent implements OnInit {
     });
 
     this.updatedMoment$ = this._store.pipe(select(SelectUpdatedMoment));
+    this.updatedMoment$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
+      if (state?.status == 'loaded') {
+        this.modalController.getTop().then((m: any) => {
+          if (m) this.dismissModal();
+        });
+      }
+    });
+
+    this.updatedMyMoment$ = this._store.pipe(select(SelectUpdatedMyMoment));
+    this.updatedMyMoment$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
+      if (state?.status == 'loaded') {
+        this.modalController.getTop().then((m: any) => {
+          if (m) this.dismissModal();
+        });
+      }
+    });
+
+    this.takedPicture$ = this._store.pipe(select(SelectTakePicture));
+    this.takedPicture$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
+      let path = state?.data?.path
+      if (path) {
+        this.uploadPicture(path);
+
+        let newPicture = [{ guid: Date.now() }];
+        this.attachmentsPreview = [...newPicture, ...this.attachmentsPreview];
+      }
+    });
   }
 
   ngOnInit() { 
@@ -80,8 +114,12 @@ export class MomentEditorComponent implements OnInit {
       });
     
     if (this.picture) {
-      this.uploadPicture(this.picture);
-      this.attachmentsPreview.push({ guid: Date.now(), file: this.picture.webPath });
+      if (this.picture?.path) {
+        this.uploadPicture(this.picture?.path);
+
+        let newPicture = [{ guid: Date.now() }];
+        this.attachmentsPreview = [...newPicture, ...this.attachmentsPreview];
+      }
     }
   }
 
@@ -89,17 +127,22 @@ export class MomentEditorComponent implements OnInit {
     this.formGroup.value['attachments'] = this.attachmentsGuid;
 
     if (this.item?.guid) {
-      this._store.dispatch(updateMoment({ data: { ...this.formGroup.value }, guid: this.item.guid }));
+      if (this.source == 'mymoment') {
+        this._store.dispatch(updateMyMoment({ data: { ...this.formGroup.value }, guid: this.item.guid }));
+      } else {
+        this._store.dispatch(updateMoment({ data: { ...this.formGroup.value }, guid: this.item.guid }));
+      }
+
     } else {
       this.formGroup.value['locations'] = [this.locationObj.guid];
       this._store.dispatch(createMoment({ data: { ...this.formGroup.value } }));
     }
   }
 
-  uploadPicture(file: any) {
+  uploadPicture(filePath: any) {
+    console.log(filePath);
     const fileTransfer: FileTransferObject = this._transfer.create();
 
-    let filePath = file.path;
     let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);
     let options: FileUploadOptions = {
       fileKey: 'file',
@@ -109,41 +152,40 @@ export class MomentEditorComponent implements OnInit {
       headers: {
         Authorization: 'Bearer ' + this._userService.getUserToken?.access,
       }
-   }
+    }
  
-  fileTransfer.upload(filePath, endpoint.attachment, options)
-    .then((data) => {
-      // success
-      let dataObj = JSON.parse(data?.response);
-      this.attachmentsGuid.push(dataObj?.guid);
+    fileTransfer.upload(filePath, endpoint.attachment, options)
+      .then((data) => {
+        // reset taked picture
+        this._store.dispatch(resetTakePicture());
 
-      // replace guid on preview
-      this.attachmentsPreview = this.attachmentsPreview.map((d: any) => {
-        if (!d?.guid || d?.guid == '') {
-          d = {
-            ...d,
-            guid: dataObj?.guid
+        // success
+        let dataObj = JSON.parse(data?.response);
+        this.attachmentsGuid.unshift(dataObj?.guid);
+
+        // replace guid on preview
+        this.attachmentsPreview = this.attachmentsPreview.map((d: any) => {
+          if (!d?.file) {
+            d = { ...dataObj }
           }
-        }
-
-        return d;
+          return d;
+        });
+      }, (err) => {
+        // error
+        console.log(err);
       });
-    }, (err) => {
-      // error
-      console.log(err);
-    });
-  
-    fileTransfer.onProgress((progressEvent) => {
-      if (progressEvent.lengthComputable) {
-        let perc = Math.floor(
-          (progressEvent.loaded / progressEvent.total) * 100
-        );
-        this.progress = perc;
-      }
-    });
+    
+      fileTransfer.onProgress((progressEvent) => {
+        if (progressEvent.lengthComputable) {
+          let perc = Math.floor(
+            (progressEvent.loaded / progressEvent.total) * 100
+          );
+          this.progress = perc;
+        }
+      });
   }
 
-  async takePicture() {
+  async presentTakePicture() {
     const picture = await Camera.getPhoto({
       quality: 75,
       allowEditing: false,
@@ -154,12 +196,23 @@ export class MomentEditorComponent implements OnInit {
     let newPic = [{ guid: '', file: picture.webPath }];
     this.attachmentsPreview = [...newPic, ...this.attachmentsPreview];
 
-    this.uploadPicture(picture);
+    this.uploadPicture(picture?.path);
+  }
+
+  async cameraPreviewModal() {
+    const modal = await this.modalController.create({
+      component: CameraPreviewComponent
+    })
+    await modal.present()
   }
 
   removeAttachment(item: any) {
     this.attachmentsPreview = this.attachmentsPreview.filter((d: any) => d.guid != item.guid);
     this.attachmentsGuid = this.attachmentsGuid.filter((d: any) => d != item.guid);
+  }
+
+  takePicture() {
+    this.cameraPreviewModal()
   }
 
   dismissModal() {

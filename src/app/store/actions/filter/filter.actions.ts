@@ -16,35 +16,19 @@ export const FilterMomentFailure = createAction(
   props<{ error: any }>()
 );
 
-// FILTER RADIUS
-export const FilterRadius = createAction(
-  '[Filter] Change Filter Radius',
+// FILTER MAP
+export const FilterMap = createAction(
+  '[Filter] Filter Map',
   props<{ data?: any }>()
 );
 
-export const FilterRadiusSuccess = createAction(
-  '[Filter] Change Filter Radius Success',
+export const FilterMapSuccess = createAction(
+  '[Filter] Filter Map Success',
   props<{ data?: any }>()
 );
 
-export const FilterRadiusFailure = createAction(
-  '[Filter] Change Filter Radius Failure',
-  props<{ error: any }>()
-);
-
-// MAP RADIUS
-export const FilterMapRadius = createAction(
-  '[Filter] Filter Map Radius',
-  props<{ data?: any }>()
-);
-
-export const FilterMapRadiusSuccess = createAction(
-  '[Filter] Filter Map Radius Success',
-  props<{ data?: any }>()
-);
-
-export const FilterMapRadiusFailure = createAction(
-  '[Filter] Filter Map Radius Failure',
+export const FilterMapFailure = createAction(
+  '[Filter] Filter Map Failure',
   props<{ error: any }>()
 );
 
@@ -61,5 +45,21 @@ export const FilterCalendarSuccess = createAction(
 
 export const FilterCalendarFailure = createAction(
   '[Filter] Filter Calendar Failure',
+  props<{ error: any }>()
+);
+
+// TAG
+export const FilterTag = createAction(
+  '[Filter] Filter Tag',
+  props<{ name?: string }>()
+);
+
+export const FilterTagSuccess = createAction(
+  '[Filter] Filter Tag Success',
+  props<{ data?: any }>()
+);
+
+export const FilterTagFailure = createAction(
+  '[Filter] Filter Tag Failure',
   props<{ error: any }>()
 );

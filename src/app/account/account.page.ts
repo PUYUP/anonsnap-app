@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { AppState } from '@capacitor/app';
+import { AppState } from 'src/app/store/app.state';
 import { ModalController } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { FormSignupComponent } from '../shared/form-signup/form-signup.component';
 import { loadUserSession, userSignout } from '../store/actions/user/user.actions';
-import { SelectUserSession, SelectUserSignin } from '../store/selectors/user/user.selectors';
+import { SelectUserSession } from '../store/selectors/user/user.selectors';
 
 @Component({
   selector: 'app-account',
@@ -16,7 +16,10 @@ export class AccountPage {
 
   userSession$: Observable<any>;
 
-  constructor(public modalController: ModalController, private _store: Store<AppState>) { 
+  constructor(
+    public modalController: ModalController,
+    private _store: Store<AppState>
+  ) { 
     this._store.dispatch(loadUserSession())
     this.userSession$ = this._store.pipe(select(SelectUserSession));
   }

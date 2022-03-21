@@ -1,30 +1,34 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { FilterMoment } from '../../actions/filter/filter.actions';
+import { filterMoments, filterMomentsSuccess } from '../../actions/moment/moment.actions';
 
+export const filterMomentsFeatureKey = 'filterMoment';
 
-export const filterMomentFeatureKey = 'filterMoment';
-
-export interface FilterMomentState {
+export interface FilterMomentsState {
   data: any;
 }
 
-export const initialState: FilterMomentState = {
+export const initialState: FilterMomentsState = {
   data: null,
 };
 
 export const reducer = createReducer(
   initialState,
 
-  on(FilterMoment, (state, payload) => {
+  on(filterMoments, (state, payload) => {
+    return {
+      ...state,
+    }
+  }),
+  on(filterMomentsSuccess, (state, payload) => {
     return {
       ...state,
       data: {
-        ...payload.data
-      }
+        ...payload.data,
+      },
     }
   })
 );
 
-export function FilterMomentReducer(state: FilterMomentState, action: Action) {
+export function FilterMomentsReducer(state: FilterMomentsState, action: Action) {
   return reducer(state, action);
 }

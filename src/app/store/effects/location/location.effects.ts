@@ -8,7 +8,7 @@ import { requestGeolocation, requestGeolocationFailure, requestGeolocationSucces
 import { Capacitor } from '@capacitor/core';
 import { Geolocation } from '@capacitor/geolocation';
 import { Store } from '@ngrx/store';
-import { AppState } from '@capacitor/app';
+import { AppState } from 'src/app/store/app.state';
 
 
 @Injectable()

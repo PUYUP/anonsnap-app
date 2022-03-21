@@ -1,0 +1,76 @@
+<ng-container *ngIf="loadedMoments$ | async as moment">
+  <div *ngIf="moment?.status == 'loading'" class="text-center p-3">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <p *ngIf="moment?.data?.results?.length == 0 && moment?.status == 'loaded'" class="small text-center text-secondary ion-padding">
+    Tidak ada kenangan
+  </p>
+
+  <ng-container *ngFor="let item of moment?.data?.results">
+    <ion-card class="shadow-none ms-0 me-0" [ngStyle]="{'border-radius': '0px'}">
+      <ion-card-content class="ps-0 pe-0">
+        <div class="d-flex align-items-center mb-2 ion-padding-start ion-padding-end">
+          <div class="d-flex">
+            <ion-icon slot="start" name="location-outline" size="small"></ion-icon>
+            <!--
+            <ion-text *ngIf="item.distance" class="small ms-1">{{ item.distance | number: '1.0-2' }} KM</ion-text>
+            <ion-text *ngIf="!item.distance" class="small ms-1">Tidak diketahui</ion-text>
+            -->
+            <ion-text *ngIf="item.user_distance != null" class="small ms-1">{{ item.user_distance | number: '1.0-2' }} KM</ion-text>
+            <ion-text *ngIf="item.user_distance == null" class="small ms-1">Tidak diketahui</ion-text>
+          </div>
+
+          <ion-text class="mx-2">&middot;</ion-text>
+          <ion-text color="medium">{{ item.create_at | date:'d MMM YYYY HH:mm' }}</ion-text>
+        </div>
+
+        <ng-container *ngIf="item?.attachments?.length > 0">
+          <div class="swiper-card">
+            <swiper class="mb-2" [pagination]="true" [zoom]="true" [navigation]="true">
+              <ng-container *ngFor="let item of item?.attachments">
+                <ng-template swiperSlide>
+                  <div class="ratio ratio-1x1">
+                    <div><ion-img [src]="item.file" class="fit-image"></ion-img></div>
+                  </div>
+                </ng-template>
+              </ng-container>
+            </swiper>
+          </div>
+        </ng-container>
+
+        <div class="ion-padding-start ion-padding-end">
+          <div *ngIf="item.summary" class="mb-2 text-dark" [innerHTML]="item.summary" [ngStyle]="{'white-space': 'pre-wrap'}"></div>
+      
+          <div class="d-flex align-items-center">
+            <ion-text color="dark" [innerHTML]="item.user ? item.user : 'Anonim'" [ngStyle]="{'font-weight': 500}"></ion-text>
+      
+            <div class="ms-auto">
+              <ion-button fill="clear" size="small" color="black" (click)="presentListComment(item)">
+                <ion-icon name="chatbox-outline" slot="start"></ion-icon>
+                <ion-text>{{ item.comment_count }} &middot; Komentari</ion-text>
+              </ion-button>
+            </div>
+          </div>
+
+          <div *ngIf="item.is_owner" class="row mt-2 pt-2 border-top">
+            <div class="col-6">
+              <ion-button expand="block" fill="clear" color="danger" size="small" mode="ios" (click)="deleteItem(item)">Hapus</ion-button>
+            </div>
+
+            <div class="col-6 border-start">
+              <ion-button expand="block" fill="clear" color="dark" size="small" mode="ios" (click)="editItem(item)">Edit</ion-button>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreData($event)" [disabled]="!nextUrl">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ng-container>

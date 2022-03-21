@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { CommentService } from 'src/app/services/comment/comment.service';
-import { createComment, createCommentFailure, createCommentSuccess, deleteComment, deleteCommentFailure, deleteCommentSuccess, loadComments, loadCommentsFailure, loadCommentsSuccess, loadMoreComments, resetCommentStatus, updateComment, updateCommentFailure, updateCommentSuccess } from '../../actions/comment/comment.actions';
+import { createComment, createCommentFailure, createCommentSuccess, createMyComment, createMyCommentFailure, createMyCommentSuccess, deleteComment, deleteCommentFailure, deleteCommentSuccess, deleteMyComment, deleteMyCommentFailure, deleteMyCommentSuccess, loadComments, loadCommentsFailure, loadCommentsSuccess, loadMoreComments, loadMoreMyComments, loadMyComments, loadMyCommentsFailure, loadMyCommentsSuccess, resetCommentStatus, resetMyCommentStatus, updateComment, updateCommentFailure, updateCommentSuccess, updateMyComment, updateMyCommentFailure, updateMyCommentSuccess } from '../../actions/comment/comment.actions';
 
 
 @Injectable()
@@ -168,6 +168,155 @@ export class CommentEffects {
             });
           }),
           catchError((error) => of(deleteCommentFailure({ error: error })))
+        );
+      })
+    )
+  );
+
+
+  // ...
+  // CREATE MY COMMENT
+  // ...
+  createMyComment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createMyComment),
+      mergeMap((payload) => {
+        return this.commentService.createComment(payload?.data).pipe(
+          map((response) => {
+            return createMyCommentSuccess({
+              data: response,
+            });
+          }),
+          catchError((error) => of(createMyCommentFailure({ error: error })))
+        );
+      })
+    )
+  );
+
+  createMyCommentSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createMyCommentSuccess),
+      map((payload) => {
+        this.presentToast('Komentar terkirim');
+        return resetMyCommentStatus();
+      })
+    )
+  );
+
+  // ...
+  // UPDATE MY COMMENT
+  // ...
+  updateMyComment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateMyComment),
+      mergeMap((payload) => {
+        return this.commentService.updateComment(payload?.data, payload?.guid).pipe(
+          map((response) => {
+            return updateMyCommentSuccess({
+              data: response,
+            });
+          }),
+          catchError((error) => of(updateMyCommentFailure({ error: error })))
+        );
+      })
+    )
+  );
+
+  updateMyCommentSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateMyCommentSuccess),
+      map((payload) => {
+        this.presentToast('Berhasil diperbarui');
+        return resetMyCommentStatus()
+      })
+    )
+  );
+
+  // ...
+  // LOADS MY COMMENT
+  // ...
+  loadsMyComment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadMyComments),
+      mergeMap((payload) => {
+        return this.commentService.loadComments(payload?.filter).pipe(
+          map((response) => {
+            return loadMyCommentsSuccess({
+              data: response,
+              filter: payload.filter,
+            });
+          }),
+          catchError((error) => of(loadMyCommentsFailure({ error: error })))
+        );
+      })
+    )
+  );
+
+  loadsMoreMyComment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadMoreMyComments),
+      mergeMap((payload) => {
+        return this.commentService.loadComments(payload?.filter).pipe(
+          map((response) => {
+            return loadMyCommentsSuccess({
+              data: {
+                ...response,
+                filter: payload.filter,
+                isLoadMore: payload?.isLoadMore,
+              },
+            });
+          }),
+          catchError((error) => of(loadMyCommentsFailure({ error: error })))
+        );
+      })
+    )
+  );
+  
+  loadsMyCommentFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadMyCommentsFailure),
+      map((payload) => {
+        let httpError = payload?.error;
+        let errorDetail = httpError?.error ? httpError?.error : httpError?.body;
+        let message = [];
+
+        for (let k in errorDetail) {
+          let m = Array.isArray(errorDetail[k]) ? errorDetail[k].join(' ') : errorDetail[k]
+          message.push(m);
+        }
+
+        if (message?.length > 0) {
+          this.presentToast(message.join(' <br /> '))
+        }
+      })
+    ), {dispatch: false}
+  );
+      
+  loadsMyCommentSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadMyCommentsSuccess),
+      map((payload) => {
+        // console.log(payload);
+      })
+    ), {dispatch: false}
+  );
+
+  // ...
+  // DELETE MY COMMENT
+  // ...
+  deleteMyComment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteMyComment),
+      mergeMap((payload) => {
+        return this.commentService.deleteComment(payload?.guid).pipe(
+          map((response) => {
+            this.presentToast('Berhasil dihapus');
+            
+            return deleteMyCommentSuccess({
+              data: response,
+            });
+          }),
+          catchError((error) => of(deleteMyCommentFailure({ error: error })))
         );
       })
     )

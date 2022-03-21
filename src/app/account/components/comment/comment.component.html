@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="black">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title size="small">Komentar Saya</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list lines="full">
+    <ng-container *ngIf="loadedComments$ | async as comment">
+      <div *ngIf="comment?.status == 'loading'" class="ion-padding text-center">
+        <ion-spinner name="dots"></ion-spinner>
+      </div>
+
+      <div *ngIf="comment?.status == 'loaded' && comment?.data?.results?.length == 0" class="text-center small text-muted ion-padding">
+        Jadi yang pertama berkomentar.
+      </div>
+
+      <ng-container *ngFor="let item of comment?.data?.results; let last = last;">
+        <ion-item [lines]="last ? 'none' : 'full'">
+          <ion-label class="ion-text-wrap">
+            <ion-text color="medium" class="small">{{ item.user }} &middot; {{ item.create_at | date:'d MMM YYYY HH:mm' }}</ion-text>
+            <div class="pt-2 text-dark" [innerHTML]="item.comment_content"></div>
+          </ion-label>
+
+          <ion-buttons *ngIf="item.is_owner" slot="end">
+            <ion-button (click)="deleteComment(item)">
+              <ion-icon size="small" name="trash-outline" slot="icon-only" color="danger"></ion-icon>
+            </ion-button>
+
+            <ion-button (click)="presentCommentEditor(item)">
+              <ion-icon size="small" name="create-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ng-container>
+    </ng-container>
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreData($event)" [disabled]="!nextUrl">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

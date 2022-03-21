@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AppState } from '@capacitor/app';
+import { AppState } from 'src/app/store/app.state';
 import { ModalController } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';

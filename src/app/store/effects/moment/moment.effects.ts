@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { MomentService } from 'src/app/services/moment/moment.service';
 import {
-  addMoment, createMoment, createMomentFailure, createMomentSuccess, deleteMoment, deleteMomentFailure, deleteMomentSuccess, updateMoment, updateMomentFailure, updateMomentSuccess, loadMoments, loadMomentsFailure, loadMomentsSuccess, loadMoreMoments, refreshMoments, resetMomentStatus
+  createMoment, createMomentFailure, createMomentSuccess, deleteMoment, deleteMomentFailure, deleteMomentSuccess, updateMoment, updateMomentFailure, updateMomentSuccess, loadMoments, loadMomentsFailure, loadMomentsSuccess, loadMoreMoments, refreshMoments, resetMomentStatus, refreshMomentsSuccess, loadMyMoments, loadMyMomentsSuccess, loadMyMomentsFailure, loadMoreMyMoments, updateMyMoment, updateMyMomentSuccess, updateMyMomentFailure, deleteMyMoment, deleteMyMomentSuccess, deleteMyMomentFailure, resetMyMomentStatus
 } from '../../actions/moment/moment.actions';
 
 
@@ -55,10 +55,8 @@ export class MomentEffects {
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.router.navigate([currentUrl]);
         });
-
-        return addMoment({data: {...payload.data}})
       })
-    )
+    ), {dispatch: false}
   );
 
   createFailure$ = createEffect(() =>
@@ -111,9 +109,9 @@ export class MomentEffects {
   );
 
   // ...
-  // EDIT FAILURE
+  // UPDATE FAILURE
   // ...
-  editFailure$ = createEffect(() =>
+  updateFailure$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateMomentFailure),
       map((payload) => {
@@ -193,23 +191,6 @@ export class MomentEffects {
       })
     )
   );
-
-  refresh$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(refreshMoments),
-      mergeMap((payload) => {
-        return this.momentService.loadMoments(payload?.filter).pipe(
-          map((response) => {
-            return loadMomentsSuccess({
-              data: response,
-              filter: payload.filter,
-            });
-          }),
-          catchError((error) => of(loadMomentsFailure({ error: error })))
-        );
-      })
-    )
-  );
   
   loadsFailure$ = createEffect(() =>
     this.actions$.pipe(
@@ -238,6 +219,172 @@ export class MomentEffects {
         // console.log(payload);
       })
     ), {dispatch: false}
+  );
+
+  refresh$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(refreshMoments),
+      mergeMap((payload) => {
+        return this.momentService.loadMoments(payload?.filter).pipe(
+          map((response) => {
+            return refreshMomentsSuccess({
+              data: response,
+              filter: payload.filter,
+            });
+          }),
+          catchError((error) => of(loadMomentsFailure({ error: error })))
+        );
+      })
+    )
+  );
+
+  // LOADS MY MOMENT
+  loadsMyMoment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadMyMoments),
+      mergeMap((payload) => {
+        return this.momentService.loadMoments(payload?.filter).pipe(
+          map((response) => {
+            return loadMyMomentsSuccess({
+              data: response,
+              filter: payload.filter,
+            });
+          }),
+          catchError((error) => of(loadMyMomentsFailure({ error: error })))
+        );
+      })
+    )
+  );
+
+  loadsMoreMyMoment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadMoreMyMoments),
+      mergeMap((payload) => {
+        return this.momentService.loadMoments(payload?.filter).pipe(
+          map((response) => {
+            return loadMyMomentsSuccess({
+              data: {
+                ...response,
+                filter: payload.filter,
+                isLoadMore: payload?.isLoadMore,
+              },
+            });
+          }),
+          catchError((error) => of(loadMyMomentsFailure({ error: error })))
+        );
+      })
+    )
+  );
+  
+  loadsMyMomentFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadMyMomentsFailure),
+      map((payload) => {
+        let httpError = payload?.error;
+        let errorDetail = httpError?.error ? httpError?.error : httpError?.body;
+        let message = [];
+
+        for (let k in errorDetail) {
+          let m = Array.isArray(errorDetail[k]) ? errorDetail[k].join(' ') : errorDetail[k]
+          message.push(m);
+        }
+
+        if (message?.length > 0) {
+          this.presentToast(message.join(' <br /> '))
+        }
+      })
+    ), {dispatch: false}
+  );
+      
+  loadsMyMomentSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadMyMomentsSuccess),
+      map((payload) => {
+        // console.log(payload);
+      })
+    ), {dispatch: false}
+  );
+
+  // ...
+  // UPDATE MY MOMENT
+  // ...
+  updateMyMoment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateMyMoment),
+      mergeMap((payload) => {
+        return this.momentService.updateMoment(payload?.data, payload?.guid).pipe(
+          map((response) => {
+            return updateMyMomentSuccess({
+              data: response,
+            });
+          }),
+          catchError((error) => of(updateMyMomentFailure({ error: error })))
+        );
+      })
+    )
+  );
+
+  updateMyMomentSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateMyMomentSuccess),
+      map((payload) => {
+        this.presentToast('Berhasil diperbarui');
+        return resetMyMomentStatus()
+      })
+    )
+  );
+
+  // ...
+  // UPDATE MY MOMENT FAILURE
+  // ...
+  updateMyMomentFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateMomentFailure),
+      map((payload) => {
+        let httpError = payload?.error;
+        let errorDetail = httpError?.error ? httpError?.error : httpError?.body;
+        let message = [];
+
+        for (let k in errorDetail) {
+          let m = Array.isArray(errorDetail[k]) ? errorDetail[k].join(' ') : errorDetail[k]
+          message.push(m);
+        }
+
+        if (message?.length > 0) {
+          this.presentToast(message.join(' <br /> '))
+        }
+      })
+    ), {dispatch: false}
+  );
+
+  // ...
+  // DELETE MY MOMENT
+  // ...
+  deleteMyMoment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteMyMoment),
+      mergeMap((payload) => {
+        return this.momentService.deleteMoment(payload?.guid).pipe(
+          map((response) => {
+            this.presentToast('Berhasil dihapus');
+            
+            return deleteMyMomentSuccess({
+              data: response,
+            });
+          }),
+          catchError((error) => of(deleteMyMomentFailure({ error: error })))
+        );
+      })
+    )
+  );
+
+  resetDeleteMyMoment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteMyMomentSuccess),
+      map((payload) => {
+        return resetMyMomentStatus()
+      })
+    )
   );
 
 }

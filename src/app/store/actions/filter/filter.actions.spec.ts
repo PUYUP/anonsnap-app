@@ -1,7 +1,7 @@
-import * as fromFilterRadius from './filter.actions';
+import * as fromFilterMap from './filter.actions';
 
-describe('FilterRadius', () => {
+describe('FilterMap', () => {
   it('should return an action', () => {
-    expect(fromFilterRadius.FilterRadius().type).toBe('[FilterRadius] Change FilterRadiuss');
+    expect(fromFilterMap.FilterMap().type).toBe('[FilterMap] Change FilterMaps');
   });
 });

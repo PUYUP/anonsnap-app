@@ -32,3 +32,36 @@ export const SelectLoadedMoments = createSelector(
 		return state;
   	}
 );
+
+export const refreshMomentsFeature = createFeatureSelector<AppState>('refreshMoments');
+export const SelectRefreshedMoments = createSelector(
+	refreshMomentsFeature,
+	(state: any) => {
+		return state;
+  	}
+);
+
+// MY MOMENT
+export const loadMyMomentsFeature = createFeatureSelector<AppState>('loadMyMoments');
+export const SelectLoadedMyMoments = createSelector(
+	loadMyMomentsFeature,
+	(state: any) => {
+		return state;
+  	}
+);
+
+export const updateMyMomentFeature = createFeatureSelector<AppState>('updateMyMoment');
+export const SelectUpdatedMyMoment = createSelector(
+	updateMyMomentFeature,
+	(state: any) => {
+		return state;
+  	}
+);
+
+export const deleteMyMomentFeature = createFeatureSelector<AppState>('deleteMyMoment');
+export const SelectDeletedMyMoment = createSelector(
+	deleteMyMomentFeature,
+	(state: any) => {
+		return state;
+  	}
+);

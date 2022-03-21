@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { createCommentSuccess } from '../../actions/comment/comment.actions';
+import { createCommentSuccess, deleteCommentSuccess } from '../../actions/comment/comment.actions';
 import {
   createMomentSuccess,
   deleteMomentSuccess,
@@ -8,7 +8,8 @@ import {
   loadMomentsFailure,
   loadMomentsSuccess,
   loadMoreMoments,
-  refreshMoments
+  refreshMoments,
+  refreshMomentsSuccess
 } from '../../actions/moment/moment.actions';
 
 
@@ -27,6 +28,12 @@ export const initialState: LoadMomentsState = {
   error: null,
   status: 'init',
 };
+
+const regex = /(?:\s|^)(?:#(?!\d+(?:\s|$)))(\w+)(?=\s|$)/gi;
+const hashtagReplacer = (hash: string) => {
+  let replacementString = hash.trim();
+  return ' <span class="text-danger">' + replacementString + '</span> ';
+}
 
 export const reducer = createReducer(
   initialState,
@@ -57,12 +64,26 @@ export const reducer = createReducer(
   on(loadMomentsSuccess, (state, payload) => {
     let results = payload?.data?.results;
     let currentResults = state?.data?.results ? state?.data?.results : [];
+    let returned = [...currentResults, ...results]
+
+    /*
+    // wrap hashtag with html
+    // from '#myhashtag' to '<span>#myhashtag</span>
+    returned = returned.map((d: any) => {
+      d = {
+        ...d,
+        summary: d.summary.replace( regex , hashtagReplacer )
+      }
+
+      return d
+    })
+    */
 
     return {
       ...state,
       data: {
         ...payload.data,
-        results: [...currentResults, ...results]
+        results: returned
       },
       error: null,
       status: 'loaded',
@@ -144,6 +165,48 @@ export const reducer = createReducer(
         ...state.data,
         results: [...newResults]
       }
+    }
+  }),
+  // update comment count when comment deleted
+  on(deleteCommentSuccess, (state, payload) => {
+    let results = state?.data?.results;
+    let newResults = results.map((d: any) => {
+      if (d.guid == payload?.data?.object_guid) {
+        d = {
+          ...d,
+          comment_count: d.comment_count - 1
+        }
+      }
+
+      return d
+    });
+
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        results: [...newResults]
+      }
+    }
+  }),
+  // refresh
+  on(refreshMoments, (state, payload) => {
+    return {
+      ...state,
+      data: {},
+      status: 'loading',
+    }
+  }),
+  on(refreshMomentsSuccess, (state, payload) => {
+    let results = payload?.data?.results;
+
+    return {
+      ...state,
+      data: {
+        ...state?.data,
+        results: results
+      },
+      status: 'loaded',
     }
   })
 );

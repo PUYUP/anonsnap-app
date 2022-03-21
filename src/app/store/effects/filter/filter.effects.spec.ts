@@ -2,21 +2,21 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Observable } from 'rxjs';
 
-import { FilterRadiusEffects } from './filter.effects';
+import { FilterMapEffects } from './filter.effects';
 
-describe('FilterRadiusEffects', () => {
+describe('FilterMapEffects', () => {
   let actions$: Observable<any>;
-  let effects: FilterRadiusEffects;
+  let effects: FilterMapEffects;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        FilterRadiusEffects,
+        FilterMapEffects,
         provideMockActions(() => actions$)
       ]
     });
 
-    effects = TestBed.inject(FilterRadiusEffects);
+    effects = TestBed.inject(FilterMapEffects);
   });
 
   it('should be created', () => {

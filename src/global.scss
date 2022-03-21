@@ -29,6 +29,7 @@
 @import '~swiper/scss';
 @import '~@ionic/angular/css/ionic-swiper';
 @import '~swiper/scss/pagination';
+@import "~swiper/scss/navigation";
 @import '~swiper/scss/zoom';
 
 /* Leaflet */
@@ -63,4 +64,26 @@ body {
 
 .fc-daygrid-day-events {
 	display: none !important;
+}
+
+.swiper-card .swiper-button-prev:after, 
+.swiper-card .swiper-button-next:after {
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.66);
+}
+
+.swiper-card .swiper-button-prev, 
+.swiper-card .swiper-button-next {
+    width: 26px;
+    height: 26px;
+    background-color: rgba(255, 255, 255, .75);
+}
+
+.swiper-card .swiper-button-prev.swiper-button-disabled,
+.swiper-card .swiper-button-next.swiper-button-disabled {
+	display: none;
+}
+
+.swiper-card .swiper-pagination-bullet {
+    background: rgba(0, 0, 0, 0.95);
 }

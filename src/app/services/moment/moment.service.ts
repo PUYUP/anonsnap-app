@@ -39,4 +39,21 @@ export class MomentService {
     
     return this._httpClient.get(url, { params: httpParams });
   }
+
+  loadTags(param: any = {}): Observable<any> {
+    let url = param?.next ? param?.next : endpoint.tags;
+    let httpParams = new HttpParams();
+
+    for (let key in param) {
+      let value = param[key];
+
+      if (value && value != undefined) {
+        if (key != 'next' && key != 'type' && value) {
+          httpParams = httpParams.set(key, value);
+        }
+      }
+    }
+    
+    return this._httpClient.get(url, { params: httpParams });
+  }
 }

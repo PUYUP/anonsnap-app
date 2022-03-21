@@ -1,6 +1,6 @@
 
 
-describe('FilterRadius Selectors', () => {
+describe('FilterMap Selectors', () => {
   it('should select the feature state', () => {
     
   });

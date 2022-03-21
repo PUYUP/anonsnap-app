@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar color="black">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="small">
+      Tags
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="tags$ | async as tags">
+    <div *ngIf="tags?.status == 'loading'" class="text-center p-3">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  
+    <ion-item *ngIf="tags?.data?.results?.length == 0 && tags?.status == 'loaded'" color="warning">
+      <ion-label class="small">Belum ada tags. Coba lokasi lain.</ion-label>
+    </ion-item>
+  
+    <ng-container *ngIf="tags?.data?.results?.length > 0">
+      <ion-list lines="full">
+        <ng-container *ngFor="let item of tags?.data?.results; let last = last;">
+          <ion-item [lines]="last ? 'none' : 'full'" button (click)="selectedTag(item)">
+            <ion-label [innerHTML]>
+              {{ item.name }}
+              
+              <p class="small pt-1" [ngStyle]="{'font-size': '12px'}">
+                <ng-container *ngIf="item.user_distance > 0">
+                  {{ item.user_distance | number: '1.0-2' }} KM
+                  <ion-text class="mx-2">&middot;</ion-text>
+                </ng-container>
+
+                {{ item.count }} kenangan
+              </p>
+            </ion-label>
+          </ion-item>
+        </ng-container>
+      </ion-list>
+    </ng-container>
+  </ng-container>
+</ion-content>

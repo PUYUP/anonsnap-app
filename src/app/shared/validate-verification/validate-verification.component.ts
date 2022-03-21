@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AppState } from '@capacitor/app';
+import { AppState } from 'src/app/store/app.state';
 import { Store } from '@ngrx/store';
 import { clearUserRequestResetPassword } from 'src/app/store/actions/user/user.actions';
 

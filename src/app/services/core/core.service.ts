@@ -14,4 +14,5 @@ export class CoreService {
   validateVerification(param: any = {}, passcode: string): Observable<any> {
     return this.httpClient.patch(endpoint.verification + passcode + '/', param);
   }
+  
 }
