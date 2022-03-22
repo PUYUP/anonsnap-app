@@ -132,3 +132,26 @@ export const userRequestResetPasswordFailure = createAction(
 export const clearUserRequestResetPassword = createAction(
   '[User] Clear Request Reset Password'
 );
+
+
+// ...
+// RESET PASSWORD CONFIRM
+// ...
+export const userConfirmResetPassword = createAction(
+  '[User] Confirm Reset Password',
+  props<{ data: any }>()
+);
+
+export const userConfirmResetPasswordSuccess = createAction(
+  '[User] Confirm Reset Password Success',
+  props<{ data: any }>()
+);
+
+export const userConfirmResetPasswordFailure = createAction(
+  '[User] Confirm Reset Password Failure',
+  props<{ error: any }>()
+);
+
+export const clearUserConfirmResetPassword = createAction(
+  '[User] Clear Confirm Reset Password'
+);

@@ -41,9 +41,9 @@ export const SelectUserResetPassword = createSelector(
   	}
 );
 
-export const selectUserResetPasswordConfirmFeature = createFeatureSelector<AppState>('userRequestResetPasswordConfirm');
-export const SelectUserResetConfirmPassword = createSelector(
-	selectUserResetPasswordConfirmFeature,
+export const selectUserConfirmResetPasswordFeature = createFeatureSelector<AppState>('userConfirmResetPassword');
+export const SelectUserConfirmResetPassword = createSelector(
+	selectUserConfirmResetPasswordFeature,
 	(state: any) => {
 		return state;
   	}

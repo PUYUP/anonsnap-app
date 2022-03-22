@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ValidateVerificationComponent } from './validate-verification.component';
+import { ResetPasswordConfirmComponent } from './reset-password-confirm.component';
 
-describe('ValidateVerificationComponent', () => {
-  let component: ValidateVerificationComponent;
-  let fixture: ComponentFixture<ValidateVerificationComponent>;
+describe('ResetPasswordConfirmComponent', () => {
+  let component: ResetPasswordConfirmComponent;
+  let fixture: ComponentFixture<ResetPasswordConfirmComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ValidateVerificationComponent ],
+      declarations: [ ResetPasswordConfirmComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ValidateVerificationComponent);
+    fixture = TestBed.createComponent(ResetPasswordConfirmComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

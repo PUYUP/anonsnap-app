@@ -11,6 +11,7 @@ export const comment = API_BASE + 'snap/v1/comments/';
 
 export const userToken = API_BASE + 'user/v1/token/';
 export const userRequestResetPassword = API_BASE + 'user/v1/reset-password/';
+export const userConfirmResetPassword = API_BASE + 'user/v1/reset-password-confirm/';
 export const user = API_BASE + 'user/v1/users/';
 
 export const verification = API_BASE + 'core/v1/verifications/';

@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { userRequestResetPassword } from 'src/app/store/actions/user/user.actions';
 import { SelectUserResetPassword } from 'src/app/store/selectors/user/user.selectors';
-import { ValidateVerificationComponent } from '../validate-verification/validate-verification.component';
+import { ResetPasswordValidationComponent } from '../reset-password-validation/reset-password-validation.component';
 
 @Component({
   selector: 'app-reset-password',
@@ -31,12 +31,12 @@ export class ResetPasswordComponent implements OnInit {
 
   async validateVerificationModal(data: any) {
     const modal = await this.modalController.create({
-      component: ValidateVerificationComponent,
+      component: ResetPasswordValidationComponent,
       backdropDismiss: false,
-      initialBreakpoint: 0.35,
-      breakpoints: [0, 0.35],
+      initialBreakpoint: 0.75,
+      breakpoints: [0, 0.75],
       componentProps: {
-        ...data
+        verificationData: { ...data }
       }
     })
     await modal.present()

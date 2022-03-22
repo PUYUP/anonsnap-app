@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { clearValidateVerification, validateVerification, validateVerificationFailure, validateVerificationSuccess } from '../../actions/core/core.actions';
+import { resetValidateVerification, validateVerification, validateVerificationFailure, validateVerificationSuccess } from '../../actions/core/core.actions';
 
 
 export const coreValidateVerificationFeatureKey = 'coreValidateVerification';
@@ -45,7 +45,7 @@ export const reducer = createReducer(
       status: 'init'
     }
   }),
-  on(clearValidateVerification, (state, payload) => {
+  on(resetValidateVerification, (state, payload) => {
     return {
       ...state,
       error: null,

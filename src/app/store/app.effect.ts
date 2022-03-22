@@ -1,4 +1,5 @@
 import { CommentEffects } from './effects/comment/comment.effects';
+import { CoreEffects } from './effects/core/core.effects';
 import { LocationEffects } from './effects/location/location.effects';
 import { MomentEffects } from './effects/moment/moment.effects';
 import { TagEffects } from './effects/tag/tag.effects';
@@ -10,4 +11,5 @@ export const AppEffects = [
   MomentEffects,
   CommentEffects,
   TagEffects,
+  CoreEffects,
 ];

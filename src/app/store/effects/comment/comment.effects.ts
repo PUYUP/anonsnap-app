@@ -54,6 +54,26 @@ export class CommentEffects {
     )
   );
 
+  createFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createCommentFailure),
+      map((payload) => {
+        let httpError = payload?.error;
+        let errorDetail = httpError?.error ? httpError?.error : httpError?.body;
+        let message = [];
+
+        for (let k in errorDetail) {
+          let m = Array.isArray(errorDetail[k]) ? errorDetail[k].join(' ') : errorDetail[k]
+          message.push(m);
+        }
+
+        if (message?.length > 0) {
+          this.presentToast(message.join(' <br /> '))
+        }
+      })
+    ), {dispatch: false}
+  );
+
   // ...
   // UPDATE
   // ...

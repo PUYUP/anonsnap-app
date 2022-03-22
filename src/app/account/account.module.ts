@@ -11,7 +11,6 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { MomentComponent } from './components/moment/moment.component';
 import { CommentComponent } from './components/comment/comment.component';
-import { ListMomentComponent } from '../explore/components/list-moment/list-moment.component';
 
 import { SwiperModule } from 'swiper/angular';
 import { FileTransfer, FileTransferObject } from '@awesome-cordova-plugins/file-transfer/ngx';
@@ -34,12 +33,10 @@ import { File } from '@awesome-cordova-plugins/file/ngx';
     ChangePasswordComponent,
     MomentComponent,
     CommentComponent,
-    ListMomentComponent,
   ],
   entryComponents: [
     ProfileComponent,
     ChangePasswordComponent,
-    ListMomentComponent,
   ],
   providers: [
     FileTransfer,

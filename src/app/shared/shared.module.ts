@@ -7,13 +7,14 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormSigninComponent } from './form-signin/form-signin.component';
 import { FormSignupComponent } from './form-signup/form-signup.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { ValidateVerificationComponent } from './validate-verification/validate-verification.component';
 import { FilterCalendarComponent } from './filter-calendar/filter-calendar.component';
 
 import { ListCommentComponent } from './list-comment/list-comment.component';
 import { CommentEditorComponent } from './comment-editor/comment-editor.component';
 import { AutosizeModule } from 'ngx-autosize';
 import { ListTagComponent } from './list-tag/list-tag.component';
+import { ResetPasswordValidationComponent } from './reset-password-validation/reset-password-validation.component';
+import { ResetPasswordConfirmComponent } from './reset-password-confirm/reset-password-confirm.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { ListTagComponent } from './list-tag/list-tag.component';
     FormSigninComponent,
     FormSignupComponent,
     ResetPasswordComponent,
-    ValidateVerificationComponent,
+    ResetPasswordValidationComponent,
+    ResetPasswordConfirmComponent,
     FilterCalendarComponent,
     ListCommentComponent,
     CommentEditorComponent,
@@ -41,7 +43,8 @@ import { ListTagComponent } from './list-tag/list-tag.component';
     FormSigninComponent,
     FormSignupComponent,
     ResetPasswordComponent,
-    ValidateVerificationComponent,
+    ResetPasswordValidationComponent,
+    ResetPasswordConfirmComponent,
     FilterCalendarComponent,
     ListCommentComponent,
     CommentEditorComponent,
@@ -52,7 +55,8 @@ import { ListTagComponent } from './list-tag/list-tag.component';
     FormSigninComponent,
     FormSignupComponent,
     ResetPasswordComponent,
-    ValidateVerificationComponent,
+    ResetPasswordValidationComponent,
+    ResetPasswordConfirmComponent,
     FilterCalendarComponent,
     ListCommentComponent,
     CommentEditorComponent,

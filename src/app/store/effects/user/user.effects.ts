@@ -7,8 +7,9 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { UserService } from 'src/app/services/user/user.service';
-import { loadUserSession, loadUserSessionSuccess, userChangePassword, userChangePasswordFailure, userChangePasswordSuccess, userRequestResetPassword, userRequestResetPasswordFailure, userRequestResetPasswordSuccess, userSignin, userSigninFailure, userSigninSuccess, userSignout, userSignoutSuccess, userUpdate, userUpdateFailure, userUpdateSuccess } from '../../actions/user/user.actions';
+import { loadUserSession, loadUserSessionSuccess, userChangePassword, userChangePasswordFailure, userChangePasswordSuccess, userConfirmResetPassword, userConfirmResetPasswordFailure, userConfirmResetPasswordSuccess, userRequestResetPassword, userRequestResetPasswordFailure, userRequestResetPasswordSuccess, userSignin, userSigninFailure, userSigninSuccess, userSignout, userSignoutSuccess, userUpdate, userUpdateFailure, userUpdateSuccess } from '../../actions/user/user.actions';
 import { userSignup, userSignupFailure, userSignupSuccess } from '../../actions/user/user.actions';
+import { requestGeolocation } from '../../actions/location/location.actions';
 
 
 @Injectable()
@@ -289,6 +290,57 @@ export class UserEffects {
 
 
   // ...
+  // LOST PASSWORD CONFIRM
+  // ...
+  userConfirmResetPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userConfirmResetPassword),
+      mergeMap((payload) => {
+        return this.userService.confirmLostPassword(payload?.data).pipe(
+          map((response) => {
+            return userConfirmResetPasswordSuccess({
+              data: {
+                ...response,
+              },
+            });
+          }),
+          catchError((error) => of(userConfirmResetPasswordFailure({ error: error })))
+        );
+      })
+    )
+  );
+
+  userConfirmResetPasswordSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userConfirmResetPasswordSuccess),
+      tap((payload) => {
+        this.presentToast('Password berhasil direset. Login dengan password baru.')
+      })
+    ), {dispatch: false}
+  );
+
+  userConfirmResetPasswordFailure$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userConfirmResetPasswordFailure),
+      tap((payload) => {
+        let httpError = payload?.error;
+        let errorDetail = httpError?.error ? httpError?.error : httpError?.body;
+        let message = [];
+
+        for (let k in errorDetail) {
+          let m = Array.isArray(errorDetail[k]) ? errorDetail[k].join(' ') : errorDetail[k]
+          message.push(m);
+        }
+
+        if (message?.length > 0) {
+          this.presentToast(message.join(' <br /> '))
+        }
+      })
+    ), {dispatch: false}
+  );
+
+
+  // ...
   // SIGNOUT
   // ...
   signout$ = createEffect(() =>
@@ -304,10 +356,11 @@ export class UserEffects {
   signoutSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userSignoutSuccess),
-      tap((payload) => {
-        this.router.navigate(['/tabs/explore'], {replaceUrl: true})
+      map((payload) => {
+        this.router.navigate(['/tabs/explore'], { replaceUrl: true });
+        return requestGeolocation({ action: 'request-location' });
       })
-    ), {dispatch: false}
+    )
   );
 
 }

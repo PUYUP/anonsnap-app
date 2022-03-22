@@ -16,6 +16,6 @@ export const validateVerificationFailure = createAction(
   props<{ error: any }>()
 );
 
-export const clearValidateVerification = createAction(
+export const resetValidateVerification = createAction(
   '[Core] Clear Validate Verification'
 );

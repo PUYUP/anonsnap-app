@@ -72,4 +72,9 @@ export class UserService {
   lostPassword(param: any = {}): Observable<any> {
     return this._httpClient.post(endpoint.userRequestResetPassword, param);
   }
+
+  confirmLostPassword(param: any = {}): Observable<any> {
+    return this._httpClient.post(endpoint.userConfirmResetPassword, param);
+  }
+
 }

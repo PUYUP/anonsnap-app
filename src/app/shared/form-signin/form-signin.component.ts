@@ -33,8 +33,8 @@ export class FormSigninComponent implements OnInit {
   async lostPasswordModal() {
     const modal = await this.modalController.create({
       component: ResetPasswordComponent,
-      initialBreakpoint: 0.35,
-      breakpoints: [0, 0.35]
+      initialBreakpoint: 0.75,
+      breakpoints: [0, 0.75]
     })
     await modal.present()
   }

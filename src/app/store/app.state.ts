@@ -28,6 +28,7 @@ import { DeleteMyCommentState } from "./reducers/delete-my-comment/delete-my-com
 import { UpdateMyCommentState } from "./reducers/update-my-comment/update-my-comment.reducer";
 import { ListMyCommentState } from "./reducers/list-my-comment/list-my-comment.reducer";
 import { CreateMyCommentState } from "./reducers/create-my-comment/create-my-comment.reducer";
+import { UserConfirmResetPasswordState } from "./reducers/user-reset-password-confirm/user-reset-password-confirm.reducer";
 
 export interface AppState {
 	filterMap: FilterMapState,
@@ -40,6 +41,7 @@ export interface AppState {
 	userUpdate: UserUpdateState,
 	userChangePassword: UserChangePasswordState,
 	userRequestResetPassword: UserResetPasswordState,
+	userConfirmResetPassword: UserConfirmResetPasswordState,
 	userSignout: UserSignoutState,
 	createMoment: CreateMomentState,
 	updateMoment: UpdateMomentState,
