@@ -85,6 +85,29 @@ export class FilterMapComponent implements OnInit {
   ngOnInit() { 
     // tiada lagi kubersamamu
   }
+
+  calcParam(map: any, circle: any) {
+    this.zoomLevel = map.getZoom();
+
+    // convert latlng to point
+    let cLatLng = circle.getLatLng();
+    let cPoint = map.latLngToContainerPoint(cLatLng);
+    let cPointX = [cPoint.x + circle.getRadius(), cPoint.y];
+    let cPointY = [cPoint.x, cPoint.y + circle.getRadius()];
+
+    // convert point to latlng
+    let latLngX = map.containerPointToLatLng(cPointX);
+    let latLngY = map.containerPointToLatLng(cPointY);
+
+    var distanceX = map.getCenter().distanceTo(latLngX); // calculate distance between c and x (latitude)
+    var distanceY = map.getCenter().distanceTo(latLngY); // calculate distance between c and y (longitude)
+
+    this.radius = (distanceX / 1000);
+    this.coordinate = {
+      latitude: latLngX.lat,
+      longitude: latLngY.lng,
+    }
+  }
   
   ionViewDidEnter() {
     let defLat = -2.548926;
@@ -151,26 +174,11 @@ export class FilterMapComponent implements OnInit {
     });
 
     map.on('dragend zoomend', (e: any) => {
-      this.coordinate = {
-        latitude: map.getCenter().lat,
-        longitude: map.getCenter().lng,
-      }
-
-      this.zoomLevel = map.getZoom()
-      const lat = map.getCenter().lat
-      const metersPerPixel = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, this.zoomLevel);
-      this.radius = metersPerPixel * 100 / 1000;
+      this.calcParam(map, circle);
     });
 
     map.whenReady((e: any) => {
-      this.coordinate = {
-        latitude: map.getCenter().lat,
-        longitude: map.getCenter().lng,
-      }
-      this.zoomLevel = map.getZoom();
-      const lat = map.getCenter().lat
-      const metersPerPixel = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, this.zoomLevel);
-      this.radius = metersPerPixel * 100 / 1000;
+      this.calcParam(map, circle);
     })
   }
 

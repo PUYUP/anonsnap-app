@@ -51,8 +51,21 @@ export class LocationEffects {
       map((payload) => {
         let httpError = payload?.error;
         let errorDetail = httpError?.error ? httpError?.error : httpError?.body;
+        let status = httpError?.status;
+        let message = [];
 
-        this.presentToast((errorDetail?.detail ? errorDetail?.detail + ' ' : '') + 'Masuk ke Akun untuk melanjutkan.')
+        for (let k in errorDetail) {
+          let m = Array.isArray(errorDetail[k]) ? errorDetail[k].join(' ') : errorDetail[k]
+          message.push(m);
+        }
+
+        if (message?.length > 0) {
+          if (status == 401) {
+            this.presentToast('Masuk ke Akun untuk melanjutkan.');
+          } else {
+            this.presentToast(message.join(' <br /> '));
+          }
+        }
       })
     ), {dispatch: false}
   );
@@ -70,7 +83,12 @@ export class LocationEffects {
         longitude:position.coords.longitude,
       }
 
-      this.store.dispatch(requestGeolocationSuccess({ data: { 'action': action, 'coordinate': coordinate} }));
+      this.store.dispatch(requestGeolocationSuccess({
+        data: {
+          'action': action,
+          'coordinate': coordinate,
+        }
+      }));
     }
     catch (err) {
       console.log('err', err);
@@ -81,7 +99,7 @@ export class LocationEffects {
   
   async postGPSPermission(canUseGPS: boolean, action: string) {
     if (canUseGPS) {
-      this.getPosition(action);
+      await this.getPosition(action);
     }
     else {
       await this.presentToast('Please turn on GPS to get location');

@@ -1,6 +1,9 @@
 {
-	"appId": "io.ionic.starter",
-	"appName": "anonsnap",
+	"appId": "com.anonsnap",
+	"appName": "AnonSnap",
 	"webDir": "www",
-	"bundledWebRuntime": false
+	"bundledWebRuntime": false,
+	"server": {
+		"url": "http://192.168.1.115:8100"
+	}
 }

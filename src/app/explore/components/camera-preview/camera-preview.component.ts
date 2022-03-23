@@ -70,7 +70,8 @@ export class CameraPreviewComponent implements OnInit {
         }
       },
       (err) => {
-        console.log(err)
+        console.log(err);
+        this.dismiss();
       });
   }
 

@@ -83,7 +83,6 @@ export class ExplorePage implements OnInit {
     // Subscribe from Geolocation
     this.geolocation$ = this._store.pipe(select(SelectGeolocation));
     this.geolocation$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
-      
       if (state?.status == 'init' && state?.error) {
         this._store.dispatch(loadMoments({}));
       }
@@ -279,7 +278,6 @@ export class ExplorePage implements OnInit {
 
     this._store.dispatch(FilterCalendar({ data: { fromdate: '', todate: '' } }));
     this._store.dispatch(FilterTag({ name: '' }));
-
     this._store.dispatch(refreshMoments({filter: {...this.filter}}));
   }
 
@@ -289,6 +287,10 @@ export class ExplorePage implements OnInit {
         // this._store.dispatch(requestGeolocation({action: 'request-location'}));
       }
     });
+  }
+
+  allowUseGPS() {
+    this._store.dispatch(requestGeolocation({action: 'request-location'}));
   }
 
   ngOnDestroy(): void {

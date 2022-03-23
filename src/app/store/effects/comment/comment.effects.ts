@@ -60,6 +60,7 @@ export class CommentEffects {
       map((payload) => {
         let httpError = payload?.error;
         let errorDetail = httpError?.error ? httpError?.error : httpError?.body;
+        let status = httpError?.status;
         let message = [];
 
         for (let k in errorDetail) {
@@ -68,7 +69,11 @@ export class CommentEffects {
         }
 
         if (message?.length > 0) {
-          this.presentToast(message.join(' <br /> '))
+          if (status == 401) {
+            this.presentToast('Masuk ke Akun untuk melanjutkan.');
+          } else {
+            this.presentToast(message.join(' <br /> '));
+          }
         }
       })
     ), {dispatch: false}

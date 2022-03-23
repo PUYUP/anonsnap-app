@@ -56,11 +56,12 @@ export class UserEffects {
   signinSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userSigninSuccess),
-      tap((payload) => {
+      map((payload) => {
         this.presentToast('Berhasil login');
         this.router.navigate(['/tabs/explore'], { replaceUrl: true });
+        return requestGeolocation({ action: 'request-location' });
       })
-    ), {dispatch: false}
+    )
   );
 
   signinFailure$ = createEffect(() =>

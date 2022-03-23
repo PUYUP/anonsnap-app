@@ -13,6 +13,7 @@ export const selectGeolocationFeature = createFeatureSelector<AppState>('locatio
 export const SelectGeolocation = createSelector(
 	selectGeolocationFeature,
 	(state: any) => {
+		console.log(state)
 		return state;
   	}
 );

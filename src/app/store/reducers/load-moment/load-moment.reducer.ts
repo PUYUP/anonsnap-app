@@ -193,6 +193,10 @@ export const reducer = createReducer(
   on(refreshMoments, (state, payload) => {
     return {
       ...state,
+      filter: {
+        ...state.filter,
+        ...payload.filter,
+      },
       data: {},
       status: 'loading',
     }

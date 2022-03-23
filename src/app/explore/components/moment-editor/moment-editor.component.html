@@ -7,12 +7,17 @@
     </ion-buttons>
 
     <ion-title size="small">Simpan Kenangan</ion-title>
+
+    <ion-button slot="end" size="small" fill="clear" color="secondary" class="ion-margin-end" [disabled]="formGroup.invalid || (createdMoment$ | async)?.status == 'loading' || (updatedMoment$ | async).status == 'loading'" (click)="send()">
+      <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+      <ion-text>Kirim</ion-text>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding-bottom">
   <ng-container *ngIf="createdMoment$ | async as moment">
-    <form [formGroup]="formGroup" (ngSubmit)="onFormSubmit()">
+    <form [formGroup]="formGroup" (ngSubmit)="onFormSubmit()" #myForm="ngForm">
       <ion-item color="light">
         <ion-textarea placeholder="Kenangan apa?" rows="4" formControlName="summary" autosize></ion-textarea>
       </ion-item>
@@ -23,13 +28,7 @@
       </ion-item>
 
       <ng-container *ngIf="attachmentsPreview?.length > 0">
-        <div class="ion-padding-start ion-padding-end">
-          <ion-progress-bar
-            *ngIf="progress > 0 && progress < 99"
-            [value]="progress / 100"
-            class="mb-2"
-          ></ion-progress-bar>
-            
+        <div class="ion-padding-start ion-padding-end ion-padding-top"> 
           <div class="row gx-2 gy-2">
             <div *ngFor="let item of attachmentsPreview" class="col-4">
               <div class="ratio ratio-1x1 rounded shadow-sm">
@@ -42,8 +41,11 @@
                   </ng-container>
 
                   <ng-container *ngIf="!item?.file">
-                    <div class="d-flex w-100 h-100 align-items-center justify-content-center">
+                    <div class="d-flex flex-column w-100 h-100 align-items-center justify-content-center">
                       <ion-spinner name="dots"></ion-spinner>
+                      <div class="d-block small text-center text-secondary">
+                        Uploading...
+                      </div>
                     </div>
                   </ng-container>
                 </div>

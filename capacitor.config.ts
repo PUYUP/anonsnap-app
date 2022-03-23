@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'anonsnap',
+  appId: 'com.anonsnap',
+  appName: 'AnonSnap',
   webDir: 'www',
   bundledWebRuntime: false
 };

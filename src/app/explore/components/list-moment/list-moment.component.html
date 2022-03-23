@@ -40,7 +40,7 @@
         </ng-container>
 
         <div class="ion-padding-start ion-padding-end">
-          <div *ngIf="item.summary" class="mb-2 text-dark" [innerHTML]="item.summary" [ngStyle]="{'white-space': 'pre-wrap'}"></div>
+          <div *ngIf="item.summary" class="mb-2 text-dark" [innerHTML]="item.summary_html" [ngStyle]="{'white-space': 'pre-wrap'}"></div>
       
           <div class="d-flex align-items-center">
             <ion-text color="dark" [innerHTML]="item.user ? item.user : 'Anonim'" [ngStyle]="{'font-weight': 500}"></ion-text>

@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { ActionsSubject, select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
@@ -28,6 +28,8 @@ import { resetTakePicture } from 'src/app/store/actions/camera-preview/camera-pr
 })
 export class MomentEditorComponent implements OnInit {
 
+  @ViewChild('myForm') ngForm: NgForm;
+  
   @Input() locationObj: any;
   @Input() picture: any;
   @Input() item: any;
@@ -213,6 +215,10 @@ export class MomentEditorComponent implements OnInit {
 
   takePicture() {
     this.cameraPreviewModal()
+  }
+
+  send() {
+    this.ngForm.ngSubmit.emit();
   }
 
   dismissModal() {

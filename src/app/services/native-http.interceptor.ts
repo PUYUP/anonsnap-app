@@ -46,7 +46,7 @@ export class NativeHttpInterceptor implements HttpInterceptor {
     request: HttpRequest<any>
   ): Promise<HttpResponse<any>> {
     const tokenAccess = this.userService.getUserToken?.access;
-
+    
     if (tokenAccess) {
       request = request.clone({
         setHeaders: {

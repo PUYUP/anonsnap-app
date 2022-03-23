@@ -31,8 +31,10 @@
     <ion-item *ngIf="geolocation?.error" lines="none" color="warning">
       <ion-icon slot="start" name="alert-circle-outline"></ion-icon>
       <ion-label class="ion-text-wrap lh-sm">
-        <ion-text class="small">Aktifkan lokasi perangkat (GPS) untuk melihat kenangan disekiar Anda.</ion-text>
+        <ion-text class="small">Izinkan aplikasi menggunakan GPS untuk melihat kenangan terdekat.</ion-text>
       </ion-label>
+
+      <ion-button slot="end" mode="ios" size="small" color="dark" (click)="allowUseGPS()">Izinkan</ion-button>
     </ion-item>
   </ng-container>
 

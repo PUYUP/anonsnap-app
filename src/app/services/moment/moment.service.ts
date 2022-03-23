@@ -30,7 +30,7 @@ export class MomentService {
     for (let key in param) {
       let value = param[key];
 
-      if (value && value != undefined) {
+      if (value && value != undefined && value != '') {
         if (key != 'next' && key != 'type' && value) {
           httpParams = httpParams.set(key, value);
         }
@@ -47,7 +47,7 @@ export class MomentService {
     for (let key in param) {
       let value = param[key];
 
-      if (value && value != undefined) {
+      if (value && value != undefined && value != '') {
         if (key != 'next' && key != 'type' && value) {
           httpParams = httpParams.set(key, value);
         }

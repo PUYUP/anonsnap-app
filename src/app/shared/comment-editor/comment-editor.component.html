@@ -14,7 +14,7 @@
 
 <ion-content class="ion-padding-bottom">
   <ng-container *ngIf="createdComment$ | async as comment">
-    <form [formGroup]="formGroup" (ngSubmit)="onFormSubmit()"  #myForm="ngForm">
+    <form [formGroup]="formGroup" (ngSubmit)="onFormSubmit()" #myForm="ngForm">
       <ion-item lines="full" color="light">
         <ion-textarea placeholder="Tulis komentar..." rows="3" formControlName="comment_content" autosize></ion-textarea>
       </ion-item>
