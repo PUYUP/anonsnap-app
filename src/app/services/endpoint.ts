@@ -8,6 +8,7 @@ export const attachment = API_BASE + 'snap/v1/attachments/';
 export const withs = API_BASE + 'snap/v1/withs/';
 export const tags = API_BASE + 'snap/v1/tags/';
 export const comment = API_BASE + 'snap/v1/comments/';
+export const reaction = API_BASE + 'snap/v1/reactions/';
 
 export const userToken = API_BASE + 'user/v1/token/';
 export const userRequestResetPassword = API_BASE + 'user/v1/reset-password/';

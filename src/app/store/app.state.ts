@@ -29,6 +29,7 @@ import { UpdateMyCommentState } from "./reducers/update-my-comment/update-my-com
 import { ListMyCommentState } from "./reducers/list-my-comment/list-my-comment.reducer";
 import { CreateMyCommentState } from "./reducers/create-my-comment/create-my-comment.reducer";
 import { UserConfirmResetPasswordState } from "./reducers/user-reset-password-confirm/user-reset-password-confirm.reducer";
+import { CreateReactionState } from "./reducers/create-reaction/create-reaction.reducer";
 
 export interface AppState {
 	filterMap: FilterMapState,
@@ -62,4 +63,5 @@ export interface AppState {
 	loadTags: LoadTagsState,
 	filterTag: FilterTagState,
 	takePicture: TakePictureState,
+	createReaction: CreateReactionState,
 }

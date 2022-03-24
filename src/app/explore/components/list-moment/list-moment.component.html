@@ -46,7 +46,13 @@
             <ion-text color="dark" [innerHTML]="item.user ? item.user : 'Anonim'" [ngStyle]="{'font-weight': 500}"></ion-text>
       
             <div class="ms-auto">
-              <ion-button fill="clear" size="small" color="black" (click)="presentListComment(item)">
+              <ion-button fill="clear" size="small" color="black" mode="ios" (click)="addReaction('like', item)">
+                <ion-icon *ngIf="item.reactions.length == 1" name="heart" slot="start"></ion-icon>
+                <ion-icon *ngIf="item.reactions.length == 0" name="heart-outline" slot="start"></ion-icon>
+                <ion-text>{{ item.reaction_count }} &middot; Suka</ion-text>
+              </ion-button>
+
+              <ion-button fill="clear" size="small" color="black" mode="ios" (click)="presentListComment(item)">
                 <ion-icon name="chatbox-outline" slot="start"></ion-icon>
                 <ion-text>{{ item.comment_count }} &middot; Komentari</ion-text>
               </ion-button>

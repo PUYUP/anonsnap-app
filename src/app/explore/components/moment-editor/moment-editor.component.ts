@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { ActionsSubject, select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
@@ -94,7 +94,7 @@ export class MomentEditorComponent implements OnInit {
 
   ngOnInit() { 
     this.formGroup = this._fb.group({
-      summary: ['', [Validators.required]],
+      summary: [''],
     });
 
     if (this.item) {
@@ -142,7 +142,6 @@ export class MomentEditorComponent implements OnInit {
   }
 
   uploadPicture(filePath: any) {
-    console.log(filePath);
     const fileTransfer: FileTransferObject = this._transfer.create();
 
     let fileName = filePath.substr(filePath.lastIndexOf('/') + 1);

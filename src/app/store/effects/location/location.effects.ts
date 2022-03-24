@@ -75,9 +75,10 @@ export class LocationEffects {
    */
   async getPosition(action: string) {
     try {
-      const position = await Geolocation.getCurrentPosition();
+      const position = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: false,
+      });
 
-      // Save user location to database
       let coordinate = {
         latitude: position.coords.latitude,
         longitude:position.coords.longitude,

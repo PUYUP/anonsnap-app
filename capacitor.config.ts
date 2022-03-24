@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.anonsnap',
-  appName: 'AnonSnap',
+  appName: 'AnonSnap!',
   webDir: 'www',
   bundledWebRuntime: false
 };

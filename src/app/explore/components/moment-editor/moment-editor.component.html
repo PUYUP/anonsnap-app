@@ -8,7 +8,7 @@
 
     <ion-title size="small">Simpan Kenangan</ion-title>
 
-    <ion-button slot="end" size="small" fill="clear" color="secondary" class="ion-margin-end" [disabled]="formGroup.invalid || (createdMoment$ | async)?.status == 'loading' || (updatedMoment$ | async).status == 'loading'" (click)="send()">
+    <ion-button slot="end" size="small" fill="clear" color="secondary" class="ion-margin-end" [disabled]="formGroup.invalid || (createdMoment$ | async)?.status == 'loading' || (updatedMoment$ | async).status == 'loading' || attachmentsGuid?.length == 0" (click)="send()">
       <ion-icon name="checkmark-outline" slot="start"></ion-icon>
       <ion-text>Kirim</ion-text>
     </ion-button>
@@ -18,13 +18,18 @@
 <ion-content [fullscreen]="true" class="ion-padding-bottom">
   <ng-container *ngIf="createdMoment$ | async as moment">
     <form [formGroup]="formGroup" (ngSubmit)="onFormSubmit()" #myForm="ngForm">
-      <ion-item color="light">
+      <ion-item color="light" class="mb-3">
         <ion-textarea placeholder="Kenangan apa?" rows="4" formControlName="summary" autosize></ion-textarea>
       </ion-item>
 
-      <ion-item lines="none" button (click)="takePicture()">
+      <ion-item lines="none" (click)="takePicture()" button>
         <ion-icon slot="start" name="camera-outline"></ion-icon>
-        <ion-label>Tambahkan Foto</ion-label>
+        <ion-label>
+          <ion-text>Tambahkan Foto</ion-text>
+          <p *ngIf="attachmentsPreview?.length == 0" class="small">
+            <ion-text color="medium">Setidaknya 1 foto</ion-text>
+          </p>
+        </ion-label>
       </ion-item>
 
       <ng-container *ngIf="attachmentsPreview?.length > 0">
@@ -44,7 +49,7 @@
                     <div class="d-flex flex-column w-100 h-100 align-items-center justify-content-center">
                       <ion-spinner name="dots"></ion-spinner>
                       <div class="d-block small text-center text-secondary">
-                        Uploading...
+                        uploading...
                       </div>
                     </div>
                   </ng-container>
@@ -56,7 +61,7 @@
       </ng-container>
 
       <div class="text-center pt-5" [ngStyle]="{'min-height': '66px'}">
-        <button *ngIf="moment?.status != 'loading' && ((updatedMoment$ | async)?.status != 'loading' && (updatedMyMoment$ | async)?.status != 'loading')" type="submit" class="btn btn-info rounded-pill px-4 py-2 text-white" [disabled]="formGroup.invalid || moment?.status == 'loading'">
+        <button *ngIf="moment?.status != 'loading' && ((updatedMoment$ | async)?.status != 'loading' && (updatedMyMoment$ | async)?.status != 'loading')" type="submit" class="btn btn-info rounded-pill px-4 py-2 text-white" [disabled]="formGroup.invalid || moment?.status == 'loading' || attachmentsGuid?.length == 0">
           <ion-text>Submit</ion-text>
         </button>
 

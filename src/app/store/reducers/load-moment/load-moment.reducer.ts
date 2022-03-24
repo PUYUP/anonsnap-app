@@ -11,6 +11,7 @@ import {
   refreshMoments,
   refreshMomentsSuccess
 } from '../../actions/moment/moment.actions';
+import { createReactionSuccess, deleteReactionSuccess } from '../../actions/reaction/reaction.actions';
 
 
 export const loadMomentsFeatureKey = 'loadMoments';
@@ -196,9 +197,7 @@ export const reducer = createReducer(
       filter: {
         ...state.filter,
         ...payload.filter,
-      },
-      data: {},
-      status: 'loading',
+      }
     }
   }),
   on(refreshMomentsSuccess, (state, payload) => {
@@ -210,7 +209,52 @@ export const reducer = createReducer(
         ...state?.data,
         results: results
       },
-      status: 'loaded',
+    }
+  }),
+  // update reaction
+  on(createReactionSuccess, (state, payload) => {
+    let results = state?.data?.results.map((d: any) => {
+      if (payload?.data?.object_guid == d.guid) {
+        d = {
+          ...d,
+          reactions: [payload.data],
+          reaction_count: d.reaction_count + 1
+        }
+      }
+
+      return d;
+    });
+
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        results: [...results],
+      },
+      status: 'init',
+    }
+  }),
+  // remove reaction
+  on(deleteReactionSuccess, (state, payload) => {
+    let results = state?.data?.results.map((d: any) => {
+      if (payload?.data?.object_guid == d.guid) {
+        d = {
+          ...d,
+          reactions: [],
+          reaction_count: d.reaction_count - 1
+        }
+      }
+
+      return d;
+    });
+
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        results: [...results],
+      },
+      status: 'init',
     }
   })
 );

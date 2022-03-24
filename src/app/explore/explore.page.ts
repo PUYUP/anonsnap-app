@@ -37,7 +37,7 @@ export class ExplorePage implements OnInit {
   location$: Observable<any>;
   geolocation$: Observable<any>;
   onDestroy$: any = new Subject<void>();
-  
+
   latitude: number;
   longitude: number;
   coordinate: any;
@@ -55,7 +55,7 @@ export class ExplorePage implements OnInit {
     public toastController: ToastController,
     private _store: Store<AppState>,
     private _router: Router
-  ) { 
+  ) {
     this.filterMap$ = this._store.pipe(select(SelectFilterMap));
     this.filterMap$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
       // update coordinate based on filter-map change
@@ -96,11 +96,6 @@ export class ExplorePage implements OnInit {
             // when posting
             this._store.dispatch(saveLocation({ data: this.coordinate }));
             break;
-          case 'refresh-location':
-            // when location updated
-            this.presentToast('Lokasi diperbarui');
-            this._store.dispatch(refreshMoments({ data: { ...this.coordinate } }));
-            break;
           case 'request-location':
             // first time location requested
             this._store.dispatch(loadMoments({
@@ -111,6 +106,17 @@ export class ExplorePage implements OnInit {
               }
             }));
             break;
+          case 'refresh-location':
+              // first time location requested
+              this._store.dispatch(refreshMoments({
+                filter: {
+                  ...this.filter,
+                  ...this.coordinate,
+                  user_latitude: this.userCoordinate?.latitude,
+                  user_longitude: this.userCoordinate?.longitude,
+                }
+              }));
+              break;
           case 'take-picture':
             // when open camera
             this.isTakePicture = true;
@@ -122,7 +128,7 @@ export class ExplorePage implements OnInit {
         }
       }
     });
-    
+
     // Subscribe when location saved to database
     this.location$ = this._store.pipe(select(SelectLocation));
     this.location$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
@@ -141,14 +147,7 @@ export class ExplorePage implements OnInit {
     // Subscribe when moment loaded
     this.loadedMoments$ = this._store.pipe(select(SelectLoadedMoments));
     this.loadedMoments$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
-      this.filter = state?.filter;
-
-      if (state?.status == 'loaded' && this.event) {
-        if (state?.error == null) this.presentToast('Berhasil diperbarui');
-        this.event.target.complete();
-      }
-
-      if (state?.error) this.event.target.complete();
+      if (this.event) this.event.target.complete();
     });
 
     // Subscribe when filter by tag
@@ -162,7 +161,7 @@ export class ExplorePage implements OnInit {
     });
     toast.present();
   }
-  
+
   /**
    * Filter moment by location
    */
@@ -225,13 +224,13 @@ export class ExplorePage implements OnInit {
       allowEditing: false,
       resultType: CameraResultType.Uri,
     });
-  
+
     // Here you get the image as result.
     this.momentEditorModal(locationObj, picture);
   }
 
   ngOnInit(): void {
-    this._store.dispatch(requestGeolocation({action: 'request-location'}));
+    this._store.dispatch(requestGeolocation({ action: 'request-location' }));
   }
 
   presentFilterMap() {
@@ -243,7 +242,7 @@ export class ExplorePage implements OnInit {
   }
 
   requestLocation(action: string) {
-    this._store.dispatch(requestGeolocation({action: action}));
+    this._store.dispatch(requestGeolocation({ action: action }));
   }
 
   presentCalendar() {
@@ -256,7 +255,7 @@ export class ExplorePage implements OnInit {
 
   doRefresh(event: any) {
     this.event = event;
-    this._store.dispatch(refreshMoments({filter: {...this.filter}}));
+    this._store.dispatch(requestGeolocation({ action: 'refresh-location' }));
   }
 
   clearFilter() {
@@ -267,7 +266,7 @@ export class ExplorePage implements OnInit {
       todate: '',
       tag: '',
     }
-    
+
     this._store.dispatch(FilterMap({
       data: {
         latitude: '',
@@ -278,9 +277,10 @@ export class ExplorePage implements OnInit {
 
     this._store.dispatch(FilterCalendar({ data: { fromdate: '', todate: '' } }));
     this._store.dispatch(FilterTag({ name: '' }));
-    this._store.dispatch(refreshMoments({filter: {...this.filter}}));
+    this._store.dispatch(refreshMoments({ filter: { ...this.filter } }));
   }
 
+  /*
   ngAfterViewInit() {
     this._router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
@@ -288,14 +288,15 @@ export class ExplorePage implements OnInit {
       }
     });
   }
+  */
 
   allowUseGPS() {
-    this._store.dispatch(requestGeolocation({action: 'request-location'}));
+    this._store.dispatch(requestGeolocation({ action: 'request-location' }));
   }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
   }
- 
+
 }

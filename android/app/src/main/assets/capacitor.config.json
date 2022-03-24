@@ -1,9 +1,6 @@
 {
 	"appId": "com.anonsnap",
-	"appName": "AnonSnap",
+	"appName": "AnonSnap!",
 	"webDir": "www",
-	"bundledWebRuntime": false,
-	"server": {
-		"url": "http://192.168.1.115:8100"
-	}
+	"bundledWebRuntime": false
 }

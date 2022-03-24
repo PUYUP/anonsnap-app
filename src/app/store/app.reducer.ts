@@ -31,6 +31,7 @@ import { UpdateMyCommentReducer } from "./reducers/update-my-comment/update-my-c
 import { ListMyCommentReducer } from "./reducers/list-my-comment/list-my-comment.reducer";
 import { CreateMyCommentReducer } from "./reducers/create-my-comment/create-my-comment.reducer";
 import { UserConfirmResetPasswordReducer } from "./reducers/user-reset-password-confirm/user-reset-password-confirm.reducer";
+import { CreateReactionReducer } from "./reducers/create-reaction/create-reaction.reducer";
 
 export const AppReducers: ActionReducerMap<AppState> = {
 	filterMap: FilterMapReducer,
@@ -64,4 +65,5 @@ export const AppReducers: ActionReducerMap<AppState> = {
 	loadTags: LoadTagsReducer,
 	filterTag: FilterTagReducer,
 	takePicture: TakePictureReducer,
+	createReaction: CreateReactionReducer,
 }

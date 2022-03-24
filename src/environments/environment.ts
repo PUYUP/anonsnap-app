@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apihost: 'http://192.168.1.138:8000',
-  // apihost: 'https://be.anonsnap.com',
+  // apihost: 'http://192.168.1.138:8000',
+  apihost: 'https://be.anonsnap.com',
 };
 
 /*

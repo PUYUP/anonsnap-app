@@ -11,6 +11,7 @@ import { MomentEditorComponent } from '../moment-editor/moment-editor.component'
 // import { PictureViewerComponent } from '../picture-viewer/picture-viewer.component';
 
 import SwiperCore, { Pagination, Zoom, Navigation } from 'swiper';
+import { createReaction, deleteReaction } from 'src/app/store/actions/reaction/reaction.actions';
 SwiperCore.use([Pagination, Navigation, Zoom]);
 
 
@@ -145,6 +146,20 @@ export class ListMomentComponent implements OnInit {
 
   presentListComment(item: any) {
     this.listCommentModal(item);
+  }
+
+  addReaction(identifier: string, item: any) {
+    if (item.reactions.length == 1) {
+      this._store.dispatch(deleteReaction({ guid: item.reactions[0].guid }));
+    } else {
+      this._store.dispatch(createReaction({
+        data: {
+          content_type: 'moment',
+          object_id: item.guid,
+          identifier: identifier
+        }
+      }));
+    }
   }
 
   ngOnDestroy() {
