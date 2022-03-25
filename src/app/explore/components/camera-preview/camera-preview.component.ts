@@ -22,6 +22,7 @@ export class CameraPreviewComponent implements OnInit {
   @Input() locationObj: any;
 
   imagePath: string;
+  zoom: any = 0;
 
   constructor(
     private _cameraPreview: CameraPreview,
@@ -54,7 +55,7 @@ export class CameraPreviewComponent implements OnInit {
       width: window.screen.width,
       height: window.screen.width,
       camera: 'back',
-      tapPhoto: false,
+      tapPhoto: true,
       tapFocus: true,
       toBack: false,
       previewDrag: false,
@@ -92,6 +93,15 @@ export class CameraPreviewComponent implements OnInit {
 
   switchCamera() {
     this._cameraPreview.switchCamera();
+  }
+
+  async setZoom(mode: string) {
+    const currentZoom = await this._cameraPreview.getZoom();
+
+    if (mode == '+') this.zoom = currentZoom + 1;
+    if (mode == '-') this.zoom = currentZoom > 1 ? currentZoom - 1 : 0;
+
+    this._cameraPreview.setZoom(this.zoom);
   }
 
   dismiss() {

@@ -76,7 +76,7 @@ export class LocationEffects {
   async getPosition(action: string) {
     try {
       const position = await Geolocation.getCurrentPosition({
-        enableHighAccuracy: false,
+        enableHighAccuracy: true,
       });
 
       let coordinate = {

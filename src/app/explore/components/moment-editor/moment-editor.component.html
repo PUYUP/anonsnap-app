@@ -19,7 +19,7 @@
   <ng-container *ngIf="createdMoment$ | async as moment">
     <form [formGroup]="formGroup" (ngSubmit)="onFormSubmit()" #myForm="ngForm">
       <ion-item color="light" class="mb-3">
-        <ion-textarea placeholder="Kenangan apa?" rows="4" formControlName="summary" autosize></ion-textarea>
+        <ion-textarea placeholder="Caption..." rows="4" formControlName="summary" autosize></ion-textarea>
       </ion-item>
 
       <ion-item lines="none" (click)="takePicture()" button>
@@ -27,7 +27,7 @@
         <ion-label>
           <ion-text>Tambahkan Foto</ion-text>
           <p *ngIf="attachmentsPreview?.length == 0" class="small">
-            <ion-text color="medium">Setidaknya 1 foto</ion-text>
+            <ion-text color="medium">Minimal 1 buah</ion-text>
           </p>
         </ion-label>
       </ion-item>

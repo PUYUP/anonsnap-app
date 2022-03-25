@@ -7,6 +7,13 @@
     </ion-buttons>
 
     <ion-title size="small">Ambil Foto</ion-title>
+
+    <ion-buttons slot="end" class="ion-margin-end">
+      <ion-button (click)="dismiss()" mode="ios">
+        <ion-icon name="close-outline" slot="start"></ion-icon>
+        <ion-text>Batal</ion-text>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -20,8 +27,16 @@
             <ion-icon name="close-outline" slot="icon-only" size="large"></ion-icon>
           </ion-button>
 
-          <ion-button color="primary" (click)="savePicture()" class="mx-3">
-            <ion-icon name="radio-button-on-outline" slot="icon-only" size="large"></ion-icon>
+          <ion-button color="light" (click)="setZoom('-')" class="mx-3">
+            <ion-icon name="remove-outline" slot="icon-only" size="large"></ion-icon>
+          </ion-button>
+
+          <ion-button color="warning" (click)="savePicture()" class="mx-3">
+              <ion-icon name="radio-button-on-outline" slot="icon-only" size="large"></ion-icon>
+          </ion-button>
+
+          <ion-button color="light" (click)="setZoom('+')" class="mx-3">
+            <ion-icon name="add-outline" slot="icon-only" size="large"></ion-icon>
           </ion-button>
 
           <ion-button color="secondary" (click)="switchCamera()">
