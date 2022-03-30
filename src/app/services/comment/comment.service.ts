@@ -24,7 +24,9 @@ export class CommentService {
   }
 
   loadComments(param: any = {}): Observable<any> {
-    let url = param?.next ? param?.next : endpoint.comment;
+    let byme = param?.byme;
+    let ep = byme || byme != undefined ? endpoint.comment + 'me/' : endpoint.comment;
+    let url = param?.next ? param?.next : ep;
     let httpParams = new HttpParams();
 
     for (let key in param) {

@@ -24,7 +24,9 @@ export class MomentService {
   }
 
   loadMoments(param: any = {}): Observable<any> {
-    let url = param?.next ? param?.next : endpoint.moment;
+    let byme = param?.byme;
+    let ep = byme || byme != undefined ? endpoint.moment + 'me/' : endpoint.moment;
+    let url = param?.next ? param?.next : ep;
     let httpParams = new HttpParams();
 
     for (let key in param) {

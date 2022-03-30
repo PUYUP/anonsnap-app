@@ -140,7 +140,7 @@ export class FilterMapComponent implements OnInit {
     let tiles = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
-        minZoom: 2,
+        minZoom: 2.5,
         maxZoom: 18,
         attribution:
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -152,10 +152,11 @@ export class FilterMapComponent implements OnInit {
 
     // circle
     let circle = L.circleMarker(latlng, {
-      radius: 50,
+      radius: 30,
       color: 'red',
       fillColor: '#f03',
-      fillOpacity: 0.25
+      fillOpacity: 0.25,
+      weight: 1
     }).addTo(map);
     
     // marker
